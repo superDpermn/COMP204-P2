@@ -165,6 +165,19 @@ class Tetromino:
                         if game_grid.is_occupied(rightmost.y, rightmost.x + 1):
                             return False
                         break  # end the inner for loop
+        # direction = up --> check rotation possibility
+        elif dir == "up":
+            # TODO: place rotation logic here
+            # ----Rotation logic----
+            # Step 1: Define a rotation axis
+            # Step 2: Calculate theoretical coordinates
+            # Step 3: Check if move is possible based on theoretical coordinates
+            # Step 4: Return some value that is either
+            #   a (boolean) or
+            #   (new tile positions) if move is possible or (None) if move is impossible
+
+
+            pass
         # direction = down --> check the bottommost tile of each column
         else:
             for col in range(n):
