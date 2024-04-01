@@ -23,27 +23,48 @@ import tkinter.filedialog as tkFileDialog
 #-----------------------------------------------------------------------
 
 # Define colors so clients need not import the color module.
-
-from lib.color import WHITE
-from lib.color import BLACK
-from lib.color import RED
-from lib.color import GREEN
-from lib.color import BLUE
-from lib.color import CYAN
-from lib.color import MAGENTA
-from lib.color import YELLOW
-from lib.color import DARK_RED
-from lib.color import DARK_GREEN
-from lib.color import DARK_BLUE
-from lib.color import GRAY
-from lib.color import DARK_GRAY
-from lib.color import LIGHT_GRAY
-from lib.color import ORANGE
-from lib.color import VIOLET
-from lib.color import PINK
-from lib.color import BOOK_BLUE
-from lib.color import BOOK_LIGHT_BLUE
-from lib.color import BOOK_RED
+try:
+    from lib.color import WHITE
+    from lib.color import BLACK
+    from lib.color import RED
+    from lib.color import GREEN
+    from lib.color import BLUE
+    from lib.color import CYAN
+    from lib.color import MAGENTA
+    from lib.color import YELLOW
+    from lib.color import DARK_RED
+    from lib.color import DARK_GREEN
+    from lib.color import DARK_BLUE
+    from lib.color import GRAY
+    from lib.color import DARK_GRAY
+    from lib.color import LIGHT_GRAY
+    from lib.color import ORANGE
+    from lib.color import VIOLET
+    from lib.color import PINK
+    from lib.color import BOOK_BLUE
+    from lib.color import BOOK_LIGHT_BLUE
+    from lib.color import BOOK_RED
+except ModuleNotFoundError:
+    from color import WHITE
+    from color import BLACK
+    from color import RED
+    from color import GREEN
+    from color import BLUE
+    from color import CYAN
+    from color import MAGENTA
+    from color import YELLOW
+    from color import DARK_RED
+    from color import DARK_GREEN
+    from color import DARK_BLUE
+    from color import GRAY
+    from color import DARK_GRAY
+    from color import LIGHT_GRAY
+    from color import ORANGE
+    from color import VIOLET
+    from color import PINK
+    from color import BOOK_BLUE
+    from color import BOOK_LIGHT_BLUE
+    from color import BOOK_RED
 
 #-----------------------------------------------------------------------
 
