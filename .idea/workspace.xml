@@ -6,17 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2d82749b-f5a4-49c3-a4c0-443fdfb9ce67" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/Tetris_2048.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/additions/_2048_logic.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/additions/gamemap_constants.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/game_grid.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/images/menu_image.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/lib/color.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/lib/picture.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/lib/stddraw.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/point.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/tetromino.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/tile.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/Tetris_2048.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/Tetris_2048.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,19 +40,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Python.Tetris_2048.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;DEV-Bahri&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Bahri Efe/Documents/GitHub/COMP204-P2&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Python.Tetris_2048.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "DEV-Bahri",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/Bahri Efe/Documents/GitHub/COMP204-P2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.editor"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Bahri Efe\Documents\GitHub\COMP204-P2" />
