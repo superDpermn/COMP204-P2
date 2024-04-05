@@ -6,7 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="2d82749b-f5a4-49c3-a4c0-443fdfb9ce67" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/Tetris2048_init.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/Tetris_2048.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/Tetris_2048.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/animation.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/animation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/game_grid.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/game_grid.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/graphics.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/point.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/tetromino.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/tetromino.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/tile.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/tile.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/user_interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/user_interface.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +31,19 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;superDpermn&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/superDpermn/COMP204-P2.git&quot;,
+    &quot;accountId&quot;: &quot;b91023d9-aff4-4861-a1c7-e79df0efb0ab&quot;
+  },
+  &quot;editorReviewEnabled&quot;: false
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -40,19 +61,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Python.Tetris_2048.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "DEV-Bahri",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/Bahri Efe/Documents/GitHub/COMP204-P2",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.editor"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Python.Tetris_2048.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;#4 on DEV-Bahri&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Bahri Efe/Documents/GitHub/COMP204-P2&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Bahri Efe\Documents\GitHub\COMP204-P2" />
@@ -61,7 +82,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-09665e90c3a7-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.15026.15" />
+        <option value="bundled-python-sdk-0509580d9d50-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.14494.241" />
       </set>
     </attachedChunks>
   </component>
