@@ -40,7 +40,6 @@ class UIContainer:
         self.canvas: GameCanvas = canvas
         self.scenes = scenes
         self.current_scene = scenes.get("main", Scene(canvas))
-        self.mouse_pressed_last_frame = False
         self.in_game = False
 
         # A very, very complex way to calculate window width with fit-content logic
@@ -177,23 +176,48 @@ class GameCanvas(UIBlock):
         self.grid_h = grid_h
         self.grid_w = grid_w
         self.edge_length = cell_edge
+        self.listens_to_key_events = True
+        self.grid_unset = True
+        self.game_grid = None
         self.tetromino = None
+
+    def finalize(self, grid):
+        self.game_grid = grid
+        self.tetromino = self.game_grid.current_tetromino
+        self.grid_unset = False
 
     def draw(self):
         super().draw()  # Draws the background and border
-        if self.tetromino is not None:
-            self.tetromino.draw()
+        if not self.grid_unset:
+            self.game_grid.current_tetromino.draw()
+
+            for row in range(len(self.game_grid.tile_matrix)):
+                for col in range(len(self.game_grid.tile_matrix[row])):
+                    t = self.game_grid.tile_matrix[row][col]
+                    if t is not None:
+                        t.draw(row, col)
 
     def update(self, delta_time):
         if self.tetromino is not None:
-            self.tetromino.animation_update(delta_time)
+            self.game_grid.current_tetromino.animation_update(delta_time)
 
-    def set_tetromino(self, tetromino):
-        self.tetromino = tetromino
+    def on_tetromino_change(self):
+        self.tetromino = self.game_grid.current_tetromino
 
-    def grid_update(self, data_changes, validator=None):
-
-        pass
+    def onKeyInput(self, events=()):
+        if not self.grid_unset:
+            for event in events:
+                if event.key == "up" or event.key == "w":
+                    self.game_grid.rotate()
+                elif event.key == "left" or event.key == "a":
+                    self.game_grid.move_LEFT()
+                elif event.key == "right" or event.key == "d":
+                    self.game_grid.move_RIGHT()
+                elif event.key == "down" or event.key == "s":
+                    self.game_grid.move_DOWN()
+                elif event.key == "space":
+                    # implement hard fall here
+                    pass
 
 
 class UIButton(UIBlock):
@@ -215,14 +239,14 @@ class UIButton(UIBlock):
 
     def onMouseInput(self, mouseEvent):
         if mouseEvent is not None:
-            if self.check_click(mouseEvent.x, mouseEvent.y):
+            if mouseEvent.isClicked and self.check_click(mouseEvent.x, mouseEvent.y):
                 self.onclick()
 
 
 class UITextBox(UIBlock):
     def __init__(self, x, y, width, height, text="", style=Style(padding=10)):
         super().__init__(x, y, width, height, style)
-        self.text = text if isinstance(text, str) else ""
+        self.text = text
 
     def draw(self):
         super().draw()

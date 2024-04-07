@@ -1,33 +1,40 @@
 import lib.stddraw as StdDraw  # used for drawing the tiles to display them
 from lib.color import Color  # used for coloring the tiles
-from Tetris_2048_init import get_finalized_UI as getUI
+from Tetris_2048_init import EDGE_LENGTH
 from animation import pickRandom
+
+colorDictionary = {0: Color(205, 193, 180),
+                   2: Color(238, 228, 218),
+                   4: Color(236, 224, 202),
+                   8: Color(242, 177, 121),
+                   16: Color(236, 141, 83),
+                   32: Color(245, 124, 95),
+                   64: Color(233, 88, 57),
+                   128: Color(249, 246, 242),
+                   256: Color(241, 208, 75),
+                   512: Color(237, 200, 80),
+                   1024: Color(237, 197, 63),
+                   2048: Color(237, 194, 46)
+                   }
+
+defaultColor = Color(60, 58, 50)
 
 
 class Tile:
-    UI = getUI()
-    HALF_EDGE = UI.canvas.edge_length / 2
+    HALF_EDGE = EDGE_LENGTH / 2
+    TILE_GAP = 1
 
     startingValues = [2, 4]
-    # the value of the boundary thickness (for the boxes around the tiles)
-    boundary_thickness = 0.004
     # font family and size used for displaying the tile number
     font_family, font_size = "Arial", 25
 
     def __init__(self, value=None):
-        self.value = value if value is not None else pickRandom(Tile.startingValues)
+        self.value: int = value if value is not None else pickRandom(Tile.startingValues)
         self.isEmpty = self.value == 0
         self.destroyMe = False
 
-        # TODO: update color logic
-        if self.isEmpty:
-            self.background_color = Color(255, 255, 255)
-            self.foreground_color = Color(0, 0, 0)
-            self.box_color = Color(200, 200, 200)
-        else:
-            self.background_color = Color(151, 178, 199)  # background (tile) color
-            self.foreground_color = Color(0, 100, 200)  # foreground (number) color
-            self.box_color = Color(0, 100, 200)  # box (boundary) color
+        self.background_color = colorDictionary.get(self.value, defaultColor)
+        self.foreground_color = Color(249, 246, 242) if self.value > 4 else Color(119, 110, 101)
 
     def merge(self, otherTile):
         if not self.isEmpty:
@@ -36,24 +43,26 @@ class Tile:
                 otherTile.value = 0
                 otherTile.isEmpty = True
                 otherTile.destroyMe = True
+                otherTile.updateColor()
                 self.updateColor()
                 return True
         return False
 
     def updateColor(self):
-        pass
+        self.background_color = colorDictionary.get(self.value, defaultColor)
+        self.foreground_color = Color(249, 246, 242) if self.value > 4 else Color(119, 110, 101)
 
     def draw(self, y, x):
         # draw the tile as a filled square
         StdDraw.setPenColor(self.background_color)
-        StdDraw.filledSquare(x, y, Tile.HALF_EDGE)
-        # draw the bounding box around the tile as a square
-        StdDraw.setPenColor(self.box_color)
-        StdDraw.setPenRadius(Tile.boundary_thickness)
-        StdDraw.square(x, y, Tile.HALF_EDGE)
+        StdDraw.filledSquare(x+Tile.HALF_EDGE, y+Tile.HALF_EDGE, Tile.HALF_EDGE-Tile.TILE_GAP)
+        # draw the bounding box around the tile as a square (disabled as a style choice)
+        # StdDraw.setPenColor(self.box_color)
+        # StdDraw.setPenRadius(Tile.boundary_thickness)
+        # StdDraw.square(x+Tile.HALF_EDGE, y+Tile.HALF_EDGE, Tile.HALF_EDGE)
         StdDraw.setPenRadius()  # reset the pen radius to its default value
         # draw the number on the tile
         StdDraw.setPenColor(self.foreground_color)
         StdDraw.setFontFamily(Tile.font_family)
         StdDraw.setFontSize(Tile.font_size)
-        StdDraw.text(x, y, str(self.value))
+        StdDraw.text(x+Tile.HALF_EDGE, y+Tile.HALF_EDGE, str(self.value))

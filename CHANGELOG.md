@@ -28,3 +28,8 @@
     >* graphics.py: added classes:
     >  * GameCanvas: represents the UI part of the game grid
     >  * UIButton: A button template to customize the UI.
+
+## v1.0.2 (Major update):
+* Fixed many bugs
+* Implemented basic tile movement
+* Added more colors to tile objects

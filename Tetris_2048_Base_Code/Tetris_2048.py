@@ -5,7 +5,7 @@
 ################################################################################
 
 import lib.stddraw as StdDraw  # for creating an animation with user interactions
-from game_grid import GameGrid  # the class for modeling the game grid
+from game_grid import GameGrid
 from tetromino import Tetromino  # the class for modeling the tetrominoes
 from Tetris_2048_init import get_finalized_UI as getUI
 from InputController import InputController
@@ -17,9 +17,9 @@ class GameInstance:
         gridSizes = self.UI.getGridSizes()
         # set the game grid dimension values stored and used in the Tetromino class
         Tetromino.grid_width, Tetromino.grid_height = gridSizes
-        self.grid = GameGrid(gridSizes)
 
-        self.UI.canvas.set_tetromino(self.grid.current_tetromino)
+        self.grid = GameGrid(gridSizes)
+        self.UI.canvas.finalize(self.grid)
 
         self.inputController = InputController()
         # define the condition to run the program loop for
@@ -30,17 +30,15 @@ class GameInstance:
             self.inputController.update()
             keyEvents = self.inputController.getKeyEvents()
             mouseEvent = self.inputController.mouseEvent
-            if self.UI.in_game:
-                self.grid.onInput(keyEvents)
             # draw and update the current scene
-            self.UI.draw(keyEvents, mouseEvent, 170)  # this argument does not pause StdDraw
+            self.UI.draw(keyEvents, mouseEvent, 17)  # this argument does not pause StdDraw
             # show and pause for 17ms duration ~= 59 frames/second
-            StdDraw.show(170)
+            StdDraw.show(17)
 
             # clear the canvas
             StdDraw.clear(StdDraw.BLACK)
 
-            if self.grid.game_over:
+            if self.UI.canvas.game_grid.game_over:
                 break
         return True
 
@@ -52,7 +50,11 @@ class GameInstance:
         # Set the current scene before creating the program window
         self.UI.launch("main")
 
-        self.scene_loop()
+        while self.play:
+            self.scene_loop()
+
+            self.UI.set_scene("end")
+            StdDraw.show(3000)
 
         print("Thanks for playing!")
 

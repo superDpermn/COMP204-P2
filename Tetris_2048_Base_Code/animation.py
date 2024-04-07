@@ -20,7 +20,7 @@ def ease_in_out_quint(t):
 
 
 class Animation:
-    def __init__(self, start_pos, end_pos, duration=300, timing_function=ease_in_out_quint, fps=60):
+    def __init__(self, start_pos, end_pos, duration=200, timing_function=linear):
         # define starting, current and end positions
         self.start_pos: list = start_pos
         self.current_pos: list = start_pos
@@ -29,8 +29,6 @@ class Animation:
         # define time-related values
         self.duration: float = duration
         self.timing_function = timing_function
-        self.fps: int = fps
-        self.frame_duration: float = 1 / fps
         self.elapsed_time: float = 0
 
         # define animation control values
@@ -54,13 +52,13 @@ class Animation:
             self.elapsed_time = 0
             return self.start_pos
 
-        elapsed_time = delta_time + self.elapsed_time
-        if elapsed_time >= self.duration:
+        self.elapsed_time += delta_time
+        if self.elapsed_time >= self.duration:
             self.isActive = False
             self.current_pos = self.end_pos
             return self.end_pos
 
-        progress = elapsed_time / self.duration
+        progress = self.elapsed_time / self.duration
         eased_progress = self.timing_function(progress)
 
         current_pos = [
@@ -69,7 +67,3 @@ class Animation:
         ]
         self.current_pos = current_pos
         return current_pos
-
-    def set_fps(self, fps):
-        self.fps = fps
-        self.frame_duration = 1 / fps

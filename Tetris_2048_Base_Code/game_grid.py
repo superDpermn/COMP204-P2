@@ -1,13 +1,10 @@
 from tetromino import Tetromino
-from user_interface import UIContainer
-from InputController import KeyboardEvent
 
 
 class GameGrid:
-    def __init__(self, UI: UIContainer, grid_size: tuple[int, int] = (12, 20),
-                 starting_tetromino: Tetromino = Tetromino()):
+    def __init__(self, grid_size: tuple[int, int] = (12, 20),
+                 starting_tetromino=Tetromino()):
         # set the dimensions of the game grid as the given arguments
-        self.UI = UI
         self.grid_height = grid_size[1]
         self.grid_width = grid_size[0]
         self.tile_matrix = [[None for i in range(self.grid_width)] for j in range(self.grid_height)]
@@ -18,33 +15,62 @@ class GameGrid:
         # the game_over flag shows whether the game is over or not
         self.game_over = False
 
-    def onInput(self, *events):
-        for event in events:
-            if isinstance(event, KeyboardEvent):
-                # handle keyboard event with a switch-like statement
-                if event.key == "up" or event.key == "w":
-                    self.move_UP()
-                elif event.key == "left" or event.key == "a":
-                    self.move_LEFT()
-                elif event.key == "down" or event.key == "s":
-                    self.move_DOWN()
-                elif event.key == "right" or event.key == "d":
-                    self.move_RIGHT()
-
     def place_tetromino(self):
-        pass
+        # ...
+        # game logic
+        # ...
 
-    def move_UP(self):
-        pass
+        # create new tetromino
+        self.current_tetromino = Tetromino()
+
+        # if the new tetromino collides with a placed tile, it is game over
+        for t in self.current_tetromino.tilePositions:
+            if self.tile_matrix[t[0]][t[1]] is not None:
+                self.game_over = True
+                break
+
+    def rotate(self):
+        answer = self.current_tetromino.canMove("up")
+        if answer is not None:
+            confirm = True
+            for t in answer:
+                if self.tile_matrix[t[0]][t[1]] is not None:
+                    confirm = False
+                    break
+            if confirm:
+                self.current_tetromino.rotate()
 
     def move_LEFT(self):
-        pass
+        answer = self.current_tetromino.canMove("left")
+        if answer is not None:
+            confirm = True
+            for t in answer:
+                if self.tile_matrix[t[0]][t[1]] is not None:
+                    confirm = False
+                    break
+            if confirm:
+                self.current_tetromino.moveLeft()
 
     def move_DOWN(self):
-        pass
+        # temporary, for testing animations
+        answer = self.current_tetromino.canMove("down")
+        if answer is not None:
+            confirm = True
+            for t in answer:
+                if self.tile_matrix[t[0]][t[1]] is not None:
+                    confirm = False
+                    break
+            if confirm:
+                self.current_tetromino.moveDown()
 
     def move_RIGHT(self):
-        pass
+        answer = self.current_tetromino.canMove("right")
+        if answer is not None:
+            confirm = True
+            for t in answer:
+                if self.tile_matrix[t[0]][t[1]] is not None:
+                    confirm = False
+                    break
+            if confirm:
+                self.current_tetromino.moveRight()
 
-    def get_canvas_data(self):
-        return self.current_tetromino, self.tile_matrix
