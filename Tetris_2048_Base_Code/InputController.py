@@ -50,11 +50,10 @@ class InputController:
 
         newMouseX, newMouseY = StdDraw.mouseX(), StdDraw.mouseY()
 
-        if (not (newMouseX, newMouseY) == (self.mouse_x, self.mouse_y)
-                or (self.lastMouseFrame and not mp)):
-            self.mouseEvent = MouseEvent(newMouseX, newMouseY, mp)
+        if (not self.lastMouseFrame) and mp:
+            self.mouseEvent = MouseEvent(newMouseX, newMouseY, True)
         else:
-            self.mouseEvent = None
+            self.mouseEvent = MouseEvent(newMouseX, newMouseY, False)
         self.lastMouseFrame = mp
         self.mouse_x, self.mouse_y = newMouseX, newMouseY
 

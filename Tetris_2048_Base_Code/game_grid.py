@@ -18,6 +18,9 @@ class GameGrid:
     def place_tetromino(self):
         # ...
         # game logic
+        for t in range(4):
+            pos = self.current_tetromino.tilePositions[t]
+            self.tile_matrix[pos[0]][pos[1]] = self.current_tetromino.tiles[t]
         # ...
 
         # create new tetromino
@@ -62,6 +65,10 @@ class GameGrid:
                     break
             if confirm:
                 self.current_tetromino.moveDown()
+            else:
+                self.place_tetromino()
+        else:
+            self.place_tetromino()
 
     def move_RIGHT(self):
         answer = self.current_tetromino.canMove("right")

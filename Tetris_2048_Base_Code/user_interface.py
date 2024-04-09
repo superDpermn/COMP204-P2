@@ -1,21 +1,26 @@
+import os
+from lib.picture import Picture
 import lib.stddraw as StdDraw  # for drawing methods it provides
 
 
 class Scene:
     # To be clear, in this context, "actor" means any object that has a noticeable presence in the scene
-    def __init__(self, *actors, isGame=False):
+    def __init__(self, *actors, isGame=False, sceneBackground=None):
         self.is_game_scene = isGame
         self.actors: list[UIBlock] = list(actors)
         self.paused = True  # scenes are paused by default, to prevent unexpected behavior
+        self.scene_background = sceneBackground
 
     def draw_scene_effects(self):  # use this method if different scenes have different effects.
-        pass
+        if self.scene_background is not None:
+            StdDraw.clear(self.scene_background)
 
     def draw(self):
         if not self.paused:
+            self.draw_scene_effects()  # draw scene effects before, so it stays in the background
             for actor in self.actors:
                 actor.draw()
-            self.draw_scene_effects()
+
 
     def pause(self):
         self.paused = True
@@ -150,13 +155,19 @@ class UIBlock:
     def draw(self):
         # Drawing the background
         StdDraw.setPenColor(self.style.background_color)
-        StdDraw.filledRectangle(self.x+self.style.padding, self.y+self.style.padding, self.box_width, self.box_height)
+        StdDraw.filledRectangle(self.x+self.style.padding,
+                                self.y+self.style.padding,
+                                self.box_width,
+                                self.box_height)
 
         # Drawing the border
         if self.style.border_width > 0:
             StdDraw.setPenRadius(self.style.border_width)
             StdDraw.setPenColor(self.style.border_color)
-            StdDraw.rectangle(self.x+self.style.padding, self.y+self.style.padding, self.box_width, self.box_height)
+            StdDraw.rectangle(self.x+self.style.padding,
+                              self.y+self.style.padding,
+                              self.box_width,
+                              self.box_height)
 
         # Drawing the contents (implemented by subclasses)
 
@@ -180,22 +191,40 @@ class GameCanvas(UIBlock):
         self.grid_unset = True
         self.game_grid = None
         self.tetromino = None
+        self.paused = True
 
     def finalize(self, grid):
         self.game_grid = grid
         self.tetromino = self.game_grid.current_tetromino
         self.grid_unset = False
+        self.paused = False
+
+    def draw_grid(self):
+        StdDraw.setPenColor(self.style.foreground_color)
+        StdDraw.setPenRadius(0.001)
+        for i in range(1, self.grid_h):
+            temp = self.y+i*self.edge_length+self.style.padding
+            StdDraw.line(self.x+self.style.padding, temp, self.x+self.box_width+self.style.padding, temp)
+        for j in range(1, self.grid_w):
+            temp = self.x+j*self.edge_length+self.style.padding
+            StdDraw.line(temp, self.y+self.style.padding, temp, self.y+self.box_height+self.style.padding)
 
     def draw(self):
         super().draw()  # Draws the background and border
         if not self.grid_unset:
+            self.draw_grid()
             self.game_grid.current_tetromino.draw()
-
             for row in range(len(self.game_grid.tile_matrix)):
                 for col in range(len(self.game_grid.tile_matrix[row])):
                     t = self.game_grid.tile_matrix[row][col]
                     if t is not None:
-                        t.draw(row, col)
+                        t.draw(self.y
+                               + self.style.padding
+                               + self.box_height
+                               - (row+1)*self.edge_length,
+                               self.x
+                               + self.style.padding
+                               + col*self.edge_length)
 
     def update(self, delta_time):
         if self.tetromino is not None:
@@ -205,7 +234,7 @@ class GameCanvas(UIBlock):
         self.tetromino = self.game_grid.current_tetromino
 
     def onKeyInput(self, events=()):
-        if not self.grid_unset:
+        if not self.grid_unset and not self.paused:
             for event in events:
                 if event.key == "up" or event.key == "w":
                     self.game_grid.rotate()
@@ -218,6 +247,9 @@ class GameCanvas(UIBlock):
                 elif event.key == "space":
                     # implement hard fall here
                     pass
+
+    def togglePause(self):
+        self.paused = not self.paused
 
 
 class UIButton(UIBlock):
@@ -238,9 +270,8 @@ class UIButton(UIBlock):
         StdDraw.text(self.center_x, self.center_y, self.text)
 
     def onMouseInput(self, mouseEvent):
-        if mouseEvent is not None:
-            if mouseEvent.isClicked and self.check_click(mouseEvent.x, mouseEvent.y):
-                self.onclick()
+        if mouseEvent.isClicked and self.check_click(mouseEvent.x, mouseEvent.y):
+            self.onclick()
 
 
 class UITextBox(UIBlock):
@@ -253,3 +284,16 @@ class UITextBox(UIBlock):
         StdDraw.setFontSize(self.style.font_size)
         StdDraw.setPenColor(self.style.foreground_color)
         StdDraw.text(self.center_x, self.center_y, self.text)
+
+
+class UIImage(UIBlock):
+    current_dir = os.path.dirname(os.path.realpath(__file__))
+
+    def __init__(self, x, y, w, h, img_name="default.png", style=Style()):
+        super().__init__(x, y, w, h, style=style)
+        # compute the path of the image file
+        self.url = UIImage.current_dir + "/images/" + img_name
+        self.image = Picture(self.url)
+
+    def draw(self):
+        StdDraw.picture(self.image, self.x+(self.width/2)+self.style.padding, self.y+(self.height/2)+self.style.padding)

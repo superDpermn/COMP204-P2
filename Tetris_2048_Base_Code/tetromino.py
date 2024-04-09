@@ -126,11 +126,12 @@ class Tetromino:
 
     def draw(self):
         for i in range(4):
-            self.tiles[i].draw(Tetromino.box_offset_x
+            self.tiles[i].draw(Tetromino.box_offset_y
                                + Tetromino.canvas_height
                                - Tetromino.CELL_EDGE_LENGTH
                                - self.animation_positions[i][0],
-                               Tetromino.box_offset_y + self.animation_positions[i][1])
+                               Tetromino.box_offset_x
+                               + self.animation_positions[i][1])
 
     def moveLeft(self):
         for i in range(4):

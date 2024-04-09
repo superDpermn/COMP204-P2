@@ -6,12 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="2d82749b-f5a4-49c3-a4c0-443fdfb9ce67" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/InputController.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/InputController.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/Tetris_2048.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/Tetris_2048.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/Tetris_2048_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/Tetris_2048_init.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/animation.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/animation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/game_grid.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/game_grid.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/images/menu_image.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/tetromino.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/tetromino.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/tile.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/tile.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/user_interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/user_interface.py" afterDir="false" />
     </list>
@@ -28,6 +29,19 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="DEV-Bahri" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -66,14 +80,17 @@
     &quot;Python.Tetris_2048.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;DEV-Bahri&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Bahri Efe/Documents/GitHub/COMP204-P2&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Bahri Efe/Documents/GitHub/COMP204-P2/Tetris_2048_Base_Code/images&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Bahri Efe\Documents\GitHub\COMP204-P2\Tetris_2048_Base_Code\images" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Bahri Efe\Documents\GitHub\COMP204-P2" />
     </key>
