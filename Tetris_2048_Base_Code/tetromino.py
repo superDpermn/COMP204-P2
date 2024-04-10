@@ -30,6 +30,7 @@ class Tetromino:
         self.rotationAxis = []
         self.assignTilePositions()
         self.tiles = [Tile(), Tile(), Tile(), Tile()]
+        self.spawnOffset = 0
         anim_start_positions = [
             [
                 (self.tilePositions[t][0]) * Tetromino.CELL_EDGE_LENGTH,
@@ -43,6 +44,7 @@ class Tetromino:
         self.animation_positions = anim_start_positions
 
     def assignTilePositions(self):
+        xOffset = 0
         if self.type == "O":
             xOffset = pickRandom(range(0, Tetromino.GRID_WIDTH - 2))
             self.tilePositions = [[0, xOffset], [0, 1+xOffset], [1, xOffset], [1, 1+xOffset]]
@@ -71,6 +73,9 @@ class Tetromino:
             xOffset = pickRandom(range(0, Tetromino.GRID_WIDTH - 1))
             self.tilePositions = [[0, xOffset], [1, xOffset], [2, xOffset], [3, xOffset]]
             self.rotationAxis = [1, xOffset]
+        else:
+            return
+        self.spawnOffset = xOffset
 
     def onUpdate(self):
         for animIndex in range(len(self.animation)):
@@ -124,14 +129,19 @@ class Tetromino:
         for i in range(4):
             self.animation_positions[i] = self.animation[i].update(delta_time)
 
-    def draw(self):
-        for i in range(4):
-            self.tiles[i].draw(Tetromino.box_offset_y
-                               + Tetromino.canvas_height
-                               - Tetromino.CELL_EDGE_LENGTH
-                               - self.animation_positions[i][0],
-                               Tetromino.box_offset_x
-                               + self.animation_positions[i][1])
+    def draw(self, x=None, y=None):
+        if x is not None and y is not None:
+            for i in range(4):
+                self.tiles[i].draw(y-self.tilePositions[i][0]*Tetromino.CELL_EDGE_LENGTH,
+                                   x+(self.tilePositions[i][1]-self.rotationAxis[1]+1)*Tetromino.CELL_EDGE_LENGTH)
+        else:
+            for i in range(4):
+                self.tiles[i].draw(Tetromino.box_offset_y
+                                   + Tetromino.canvas_height
+                                   - Tetromino.CELL_EDGE_LENGTH
+                                   - self.animation_positions[i][0],
+                                   Tetromino.box_offset_x
+                                   + self.animation_positions[i][1])
 
     def moveLeft(self):
         for i in range(4):

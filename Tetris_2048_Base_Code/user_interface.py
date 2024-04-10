@@ -41,7 +41,6 @@ class Scene:
 # an object that contains the entire UI
 class UIContainer:
     def __init__(self, canvas, **scenes):
-        self.tetromino = canvas.tetromino
         self.canvas: GameCanvas = canvas
         self.scenes = scenes
         self.current_scene = scenes.get("main", Scene(canvas))
@@ -182,7 +181,7 @@ class UIBlock:
 
 
 class GameCanvas(UIBlock):
-    def __init__(self, x=0, y=0, grid_w=20, grid_h=12, cell_edge=30, style=Style(padding=10)):
+    def __init__(self, x=0, y=0, grid_w=20, grid_h=12, cell_edge=30, style=Style(padding=10), tetromino_view=None):
         super().__init__(x, y, grid_w*cell_edge, grid_h*cell_edge, style)
         self.grid_h = grid_h
         self.grid_w = grid_w
@@ -190,12 +189,13 @@ class GameCanvas(UIBlock):
         self.listens_to_key_events = True
         self.grid_unset = True
         self.game_grid = None
-        self.tetromino = None
+        self.tetrominoView = tetromino_view
         self.paused = True
 
+    # The finalize() method is called by the main class to connect the gameGrid and gameCanvas objects
     def finalize(self, grid):
         self.game_grid = grid
-        self.tetromino = self.game_grid.current_tetromino
+        self.tetrominoView.updateTetromino(self.game_grid.nextTetromino)
         self.grid_unset = False
         self.paused = False
 
@@ -227,11 +227,8 @@ class GameCanvas(UIBlock):
                                + col*self.edge_length)
 
     def update(self, delta_time):
-        if self.tetromino is not None:
+        if self.game_grid.current_tetromino is not None:
             self.game_grid.current_tetromino.animation_update(delta_time)
-
-    def on_tetromino_change(self):
-        self.tetromino = self.game_grid.current_tetromino
 
     def onKeyInput(self, events=()):
         if not self.grid_unset and not self.paused:
@@ -243,7 +240,12 @@ class GameCanvas(UIBlock):
                 elif event.key == "right" or event.key == "d":
                     self.game_grid.move_RIGHT()
                 elif event.key == "down" or event.key == "s":
-                    self.game_grid.move_DOWN()
+                    # The game_grid.move_DOWN() method, unlike similar methods, returns a boolean
+                    # This is a special event, because if the move_DOWN() method returns True,
+                    # it means the last tetromino was placed. In this case update the view:
+                    if self.game_grid.move_DOWN():  # executes the move_DOWN() method, then evaluates
+                        if self.tetrominoView is not None:
+                            self.tetrominoView.updateTetromino(self.game_grid.nextTetromino)
                 elif event.key == "space":
                     # implement hard fall here
                     pass
@@ -275,7 +277,7 @@ class UIButton(UIBlock):
 
 
 class UITextBox(UIBlock):
-    def __init__(self, x, y, width, height, text="", style=Style(padding=10)):
+    def __init__(self, x, y, width, height, text="", style=Style()):
         super().__init__(x, y, width, height, style)
         self.text = text
 
@@ -297,3 +299,19 @@ class UIImage(UIBlock):
 
     def draw(self):
         StdDraw.picture(self.image, self.x+(self.width/2)+self.style.padding, self.y+(self.height/2)+self.style.padding)
+
+
+class TetrominoView(UIBlock):
+    def __init__(self, x, y, w, h, style=Style()):
+        super().__init__(x, y, w, h, style)
+        self.tetromino = None
+
+    def updateTetromino(self, newTetromino):
+        oldTetromino = self.tetromino
+        self.tetromino = newTetromino
+        return oldTetromino
+
+    def draw(self):
+        # completely overrides superclasses draw() method, just like an image
+        if self.tetromino is not None:
+            self.tetromino.draw(self.x, self.y)
