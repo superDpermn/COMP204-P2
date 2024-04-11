@@ -12,16 +12,23 @@ class GameGrid:
         # self.tile_matrix = np.full((grid_h, grid_w), None)
         # create the tetromino that is currently being moved on the game grid
         self.current_tetromino: Tetromino = starting_tetromino
+        self.nextTetromino = Tetromino()
+        self.difficulty = "NORMAL"
         # the game_over flag shows whether the game is over or not
         self.game_over = False
 
     def place_tetromino(self):
         # ...
         # game logic
+        for t in range(4):
+            pos = self.current_tetromino.tilePositions[t]
+            self.tile_matrix[pos[0]][pos[1]] = self.current_tetromino.tiles[t]
         # ...
 
         # create new tetromino
-        self.current_tetromino = Tetromino()
+        self.current_tetromino = self.nextTetromino
+        # create next tetromino for showing the user
+        self.nextTetromino = Tetromino()
 
         # if the new tetromino collides with a placed tile, it is game over
         for t in self.current_tetromino.tilePositions:
@@ -51,7 +58,7 @@ class GameGrid:
             if confirm:
                 self.current_tetromino.moveLeft()
 
-    def move_DOWN(self):
+    def move_DOWN(self) -> bool:
         # temporary, for testing animations
         answer = self.current_tetromino.canMove("down")
         if answer is not None:
@@ -62,6 +69,13 @@ class GameGrid:
                     break
             if confirm:
                 self.current_tetromino.moveDown()
+                return False
+            else:
+                self.place_tetromino()
+                return True
+        else:
+            self.place_tetromino()
+            return True
 
     def move_RIGHT(self):
         answer = self.current_tetromino.canMove("right")
@@ -73,4 +87,3 @@ class GameGrid:
                     break
             if confirm:
                 self.current_tetromino.moveRight()
-

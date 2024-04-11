@@ -1,26 +1,33 @@
-import lib.stddraw as StdDraw  # for drawing methods it provides
+import os
+from lib.picture import Picture
+import lib.stddraw as StdDraw
+from tetromino import Tetromino
 
 
 class Scene:
-    # To be clear, in this context, "actor" means any object that has a noticeable presence in the scene
-    def __init__(self, *actors, isGame=False):
+    """
+    A container for UIBlock and its subclasses. Represents a single game or menu window.
+    """
+    def __init__(self, *actors, isGame=False, sceneBackground=None):
         self.is_game_scene = isGame
-        self.actors: list[UIBlock] = list(actors)
+        self.actors = actors
         self.paused = True  # scenes are paused by default, to prevent unexpected behavior
+        self.scene_background = sceneBackground
 
-    def draw_scene_effects(self):  # use this method if different scenes have different effects.
-        pass
+    def draw_scene_effects(self):
+        if self.scene_background is not None:
+            StdDraw.clear(self.scene_background)
 
     def draw(self):
         if not self.paused:
+            self.draw_scene_effects()  # draw scene effects before content, so that it stays in the background
             for actor in self.actors:
                 actor.draw()
-            self.draw_scene_effects()
 
-    def pause(self):
+    def pause(self):  # Not to be confused with GameCanvas.togglePause()
         self.paused = True
 
-    def unpause(self):
+    def unpause(self):  # Not to be confused with GameCanvas.togglePause()
         self.paused = False
 
     def update(self, keyEvents, mouseEvent, deltaTime=1):
@@ -36,7 +43,6 @@ class Scene:
 # an object that contains the entire UI
 class UIContainer:
     def __init__(self, canvas, **scenes):
-        self.tetromino = canvas.tetromino
         self.canvas: GameCanvas = canvas
         self.scenes = scenes
         self.current_scene = scenes.get("main", Scene(canvas))
@@ -59,23 +65,8 @@ class UIContainer:
             self.window_width = self.canvas.width
             self.window_height = self.canvas.height
 
-    def addScenes(self, **scenes):
-        self.scenes.update(scenes)
-
-        scene_max_x = max([max([actor.x + actor.width
-                                for actor in scene_obj.actors])
-                           for scene_obj in self.scenes.values()])
-        scene_max_y = max([max([actor.y + actor.height
-                                for actor in scene_obj.actors])
-                           for scene_obj in self.scenes.values()])
-        self.window_width = scene_max_x
-        self.window_height = scene_max_y
-
     def getGridSizes(self):
         return self.canvas.grid_w, self.canvas.grid_h
-
-    def getWindowSize(self):
-        return self.window_width, self.window_height
 
     def load_scene(self, scene: Scene):
         self.current_scene = scene
@@ -106,7 +97,7 @@ class UIContainer:
         else:
             print("Error: Couldn't find starting scene, launch cancelled")
 
-    def reset(self):
+    def reset(self):  # Unfinished
         pass
 
     def askPlayAgain(self):
@@ -114,11 +105,25 @@ class UIContainer:
 
 
 class Style:
+    """
+    A CSS-inspired style implementation for use with UIBlock and its subclasses
+    """
     # Maintain this syntax for the keyword arguments:
     # * all lowercase characters
     # * multiple words separated by an underscore
     # * no whitespace and no numbers
     def __init__(self, **kwargs):
+        """
+        Initializes a Style object and sets every given attribute value
+
+        Args:\n
+        - background_color: the background color of the element
+        - foreground_color: the color used by subclasses to draw contents
+        - border_color: border color
+        - border_width: a value between 0 and 1 for setting the pen radius when drawing the border. Zero by default.
+        - padding: a value that is added to offset the block in the NE direction
+        - font_size: font size, in pixels
+        """
         self.background_color = kwargs.get("background_color", StdDraw.WHITE)
         self.foreground_color = kwargs.get("foreground_color", StdDraw.BLACK)
         self.border_color = kwargs.get("border_color", StdDraw.BLACK)
@@ -127,13 +132,21 @@ class Style:
         self.font_size = kwargs.get("font_size", 16)
 
 
-# superclass for all UI elements, including the game grid
 class UIBlock:
-    # The idea is having a "fit-content" approach to window sizing
-    # Every instance of a subclass should invoke the resize() method
-    # and that method should update the window size.
-
+    """
+    Superclass for all UI elements
+    """
     def __init__(self, x, y, box_width, box_height, style=Style(), isAnimated=False):
+        """
+        Initializes a UI block with specified parameters.
+
+        Args:\n
+        - x: The x-coordinate of the bottom-left corner of the block.
+        - y: The y-coordinate of the bottom-left corner of the block.
+        - box_width: The width of the block.
+        - box_height: The height of the block.
+        - style: An instance of the Style class defining the visual style of the block.
+        """
         self.x = x if x > 0 else 0
         self.y = y if y > 0 else 0
         self.box_width = box_width if box_width > 0 else 0
@@ -148,19 +161,34 @@ class UIBlock:
         self.listens_to_mouse_events = False
 
     def draw(self):
+        """
+        Draws the UIBlock to the StdDraw canvas
+        """
         # Drawing the background
         StdDraw.setPenColor(self.style.background_color)
-        StdDraw.filledRectangle(self.x+self.style.padding, self.y+self.style.padding, self.box_width, self.box_height)
+        StdDraw.filledRectangle(self.x+self.style.padding,
+                                self.y+self.style.padding,
+                                self.box_width,
+                                self.box_height)
 
         # Drawing the border
         if self.style.border_width > 0:
             StdDraw.setPenRadius(self.style.border_width)
             StdDraw.setPenColor(self.style.border_color)
-            StdDraw.rectangle(self.x+self.style.padding, self.y+self.style.padding, self.box_width, self.box_height)
+            StdDraw.rectangle(self.x+self.style.padding,
+                              self.y+self.style.padding,
+                              self.box_width,
+                              self.box_height)
 
         # Drawing the contents (implemented by subclasses)
 
     def update(self, delta_time):  # Implement animations for appropriate classes
+        """
+        Override this method if the object changes with time
+
+        Args:
+        - delta_time: The time elapsed since the last update.
+        """
         pass
 
     def onKeyInput(self, events):
@@ -171,7 +199,10 @@ class UIBlock:
 
 
 class GameCanvas(UIBlock):
-    def __init__(self, x=0, y=0, grid_w=20, grid_h=12, cell_edge=30, style=Style(padding=10)):
+    """
+    A UIBlock subclass that represents the game grid's visual part.
+    """
+    def __init__(self, x=0, y=0, grid_w=12, grid_h=20, cell_edge=30, style=Style(padding=10), tetromino_view=None):
         super().__init__(x, y, grid_w*cell_edge, grid_h*cell_edge, style)
         self.grid_h = grid_h
         self.grid_w = grid_w
@@ -179,33 +210,58 @@ class GameCanvas(UIBlock):
         self.listens_to_key_events = True
         self.grid_unset = True
         self.game_grid = None
-        self.tetromino = None
+        self.tetrominoView = tetromino_view
+        self.paused = True
 
+    # The finalize() method is called by the main class to connect the gameGrid and gameCanvas objects
     def finalize(self, grid):
         self.game_grid = grid
-        self.tetromino = self.game_grid.current_tetromino
+        self.grid_h, self.grid_w = self.game_grid.grid_height, self.game_grid.grid_width
+        self.box_width, self.box_height = self.grid_w*self.edge_length, self.grid_h*self.edge_length
+        Tetromino.set_grid(self)
+        self.game_grid.tile_matrix = [
+            [None for i in range(self.game_grid.grid_width)]
+            for j in range(self.game_grid.grid_height)
+            ]
+        self.game_grid.current_tetromino = Tetromino()
+        self.game_grid.nextTetromino = Tetromino()
+        self.tetrominoView.updateTetromino(self.game_grid.nextTetromino)
         self.grid_unset = False
+        self.paused = False
+
+    def draw_grid(self):
+        StdDraw.setPenColor(self.style.foreground_color)
+        StdDraw.setPenRadius(0.001)
+        for i in range(1, self.grid_h):
+            temp = self.y+i*self.edge_length+self.style.padding
+            StdDraw.line(self.x+self.style.padding, temp, self.x+self.box_width+self.style.padding, temp)
+        for j in range(1, self.grid_w):
+            temp = self.x+j*self.edge_length+self.style.padding
+            StdDraw.line(temp, self.y+self.style.padding, temp, self.y+self.box_height+self.style.padding)
 
     def draw(self):
         super().draw()  # Draws the background and border
         if not self.grid_unset:
+            self.draw_grid()
             self.game_grid.current_tetromino.draw()
-
             for row in range(len(self.game_grid.tile_matrix)):
                 for col in range(len(self.game_grid.tile_matrix[row])):
                     t = self.game_grid.tile_matrix[row][col]
                     if t is not None:
-                        t.draw(row, col)
+                        t.draw(self.y
+                               + self.style.padding
+                               + self.box_height
+                               - (row+1)*self.edge_length,
+                               self.x
+                               + self.style.padding
+                               + col*self.edge_length)
 
     def update(self, delta_time):
-        if self.tetromino is not None:
+        if self.game_grid.current_tetromino is not None:
             self.game_grid.current_tetromino.animation_update(delta_time)
 
-    def on_tetromino_change(self):
-        self.tetromino = self.game_grid.current_tetromino
-
     def onKeyInput(self, events=()):
-        if not self.grid_unset:
+        if not self.grid_unset and not self.paused:
             for event in events:
                 if event.key == "up" or event.key == "w":
                     self.game_grid.rotate()
@@ -214,13 +270,24 @@ class GameCanvas(UIBlock):
                 elif event.key == "right" or event.key == "d":
                     self.game_grid.move_RIGHT()
                 elif event.key == "down" or event.key == "s":
-                    self.game_grid.move_DOWN()
+                    # The game_grid.move_DOWN() method, unlike similar methods, returns a boolean
+                    # This is a special event, because if the move_DOWN() method returns True,
+                    # it means the last tetromino was placed. In this case update the view:
+                    if self.game_grid.move_DOWN():  # executes the move_DOWN() method, then evaluates
+                        if self.tetrominoView is not None:
+                            self.tetrominoView.updateTetromino(self.game_grid.nextTetromino)
                 elif event.key == "space":
                     # implement hard fall here
                     pass
 
+    def togglePause(self):
+        self.paused = not self.paused
+
 
 class UIButton(UIBlock):
+    """
+    A UIBlock subclass that represents a clickable button
+    """
     def __init__(self, x=0, y=0, width=50, height=50, buttonText="", style=Style(), onclick=lambda: None):
         super().__init__(x, y, width, height, style)
         self.text = buttonText
@@ -238,13 +305,15 @@ class UIButton(UIBlock):
         StdDraw.text(self.center_x, self.center_y, self.text)
 
     def onMouseInput(self, mouseEvent):
-        if mouseEvent is not None:
-            if mouseEvent.isClicked and self.check_click(mouseEvent.x, mouseEvent.y):
-                self.onclick()
+        if mouseEvent.isClicked and self.check_click(mouseEvent.x, mouseEvent.y):
+            self.onclick()
 
 
 class UITextBox(UIBlock):
-    def __init__(self, x, y, width, height, text="", style=Style(padding=10)):
+    """
+    A UIBlock subclass that represents a style-able text box.
+    """
+    def __init__(self, x, y, width, height, text="", style=Style()):
         super().__init__(x, y, width, height, style)
         self.text = text
 
@@ -253,3 +322,42 @@ class UITextBox(UIBlock):
         StdDraw.setFontSize(self.style.font_size)
         StdDraw.setPenColor(self.style.foreground_color)
         StdDraw.text(self.center_x, self.center_y, self.text)
+
+
+class UIImage(UIBlock):
+    """
+    A UIBlock subclass that represents a static image.
+    """
+    current_dir = os.path.dirname(os.path.realpath(__file__))
+
+    def __init__(self, x, y, w, h, img_name="default.png", style=Style()):
+        """
+        Make sure that img_name parameter is set to the correct file name with extension
+        The image file must be placed in the images folder in the project root.
+        """
+        super().__init__(x, y, w, h, style=style)
+        # compute the path of the image file
+        self.url = UIImage.current_dir + "/images/" + img_name
+        self.image = Picture(self.url)
+
+    def draw(self):
+        StdDraw.picture(self.image, self.x+(self.width/2)+self.style.padding, self.y+(self.height/2)+self.style.padding)
+
+
+class TetrominoView(UIBlock):
+    """
+    A UIBlock subclass that implements the "next tetromino" snippet
+    """
+    def __init__(self, x, y, w, h, style=Style()):
+        super().__init__(x, y, w, h, style)
+        self.tetromino = None
+
+    def updateTetromino(self, newTetromino):
+        oldTetromino = self.tetromino
+        self.tetromino = newTetromino
+        return oldTetromino
+
+    def draw(self):
+        # completely overrides superclasses draw() method, just like an image
+        if self.tetromino is not None:
+            self.tetromino.draw(self.x, self.y)

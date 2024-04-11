@@ -1,28 +1,28 @@
 from tile import Tile  # used for modeling each tile on the tetrominoes
 from animation import pickRandom, Animation
-from Tetris_2048_init import get_finalized_UI as getUI
 
 
 # Custom-made tetromino class
 class Tetromino:
-    # get the UIContainer object with finalized parameters
-    UI = getUI()
-    # synchronize parameters
-    CELL_EDGE_LENGTH = UI.canvas.edge_length
-    GRID_WIDTH = UI.canvas.grid_w
-    GRID_HEIGHT = UI.canvas.grid_h
-    canvas_height = UI.canvas.box_height
-    canvas_width = UI.canvas.box_width
-    box_offset_x = UI.canvas.x + UI.canvas.style.padding
-    box_offset_y = UI.canvas.y + UI.canvas.style.padding
+    CELL_EDGE_LENGTH = 30
+    GRID_WIDTH = 12
+    GRID_HEIGHT = 20
+    canvas_height = CELL_EDGE_LENGTH*GRID_HEIGHT
+    canvas_width = CELL_EDGE_LENGTH*GRID_WIDTH
+    box_offset_x = 15
+    box_offset_y = 15
 
     # A static method to update class variables.
     # Must be called before any Tetromino objects are created.
     @classmethod
-    def set_grid(cls, grid_width, grid_height, visual_edge_length):
-        cls.GRID_WIDTH = grid_width
-        cls.GRID_HEIGHT = grid_height
-        cls.CELL_EDGE_LENGTH = visual_edge_length
+    def set_grid(cls, canvas):
+        cls.GRID_WIDTH = canvas.grid_w
+        cls.GRID_HEIGHT = canvas.grid_h
+        cls.CELL_EDGE_LENGTH = canvas.edge_length
+        cls.canvas_width, cls.canvas_height = cls.CELL_EDGE_LENGTH*cls.GRID_WIDTH, cls.CELL_EDGE_LENGTH*cls.GRID_HEIGHT
+        cls.box_offset_x = canvas.x + canvas.style.padding
+        cls.box_offset_y = canvas.y + canvas.style.padding
+        Tile.UpdateConstants(cls.CELL_EDGE_LENGTH)
 
     def __init__(self):
         self.type = pickRandom(["O", "L", "J", "T", "Z", "N", "I"])
@@ -30,6 +30,7 @@ class Tetromino:
         self.rotationAxis = []
         self.assignTilePositions()
         self.tiles = [Tile(), Tile(), Tile(), Tile()]
+        self.spawnOffset = 0
         anim_start_positions = [
             [
                 (self.tilePositions[t][0]) * Tetromino.CELL_EDGE_LENGTH,
@@ -71,6 +72,8 @@ class Tetromino:
             xOffset = pickRandom(range(0, Tetromino.GRID_WIDTH - 1))
             self.tilePositions = [[0, xOffset], [1, xOffset], [2, xOffset], [3, xOffset]]
             self.rotationAxis = [1, xOffset]
+        else:
+            return
 
     def onUpdate(self):
         for animIndex in range(len(self.animation)):
@@ -124,13 +127,19 @@ class Tetromino:
         for i in range(4):
             self.animation_positions[i] = self.animation[i].update(delta_time)
 
-    def draw(self):
-        for i in range(4):
-            self.tiles[i].draw(Tetromino.box_offset_x
-                               + Tetromino.canvas_height
-                               - Tetromino.CELL_EDGE_LENGTH
-                               - self.animation_positions[i][0],
-                               Tetromino.box_offset_y + self.animation_positions[i][1])
+    def draw(self, x=None, y=None):
+        if x is not None and y is not None:
+            for i in range(4):
+                self.tiles[i].draw(y-self.tilePositions[i][0]*Tetromino.CELL_EDGE_LENGTH,
+                                   x+(self.tilePositions[i][1]-self.rotationAxis[1]+1)*Tetromino.CELL_EDGE_LENGTH)
+        else:
+            for i in range(4):
+                self.tiles[i].draw(Tetromino.box_offset_y
+                                   + Tetromino.canvas_height
+                                   - Tetromino.CELL_EDGE_LENGTH
+                                   - self.animation_positions[i][0],
+                                   Tetromino.box_offset_x
+                                   + self.animation_positions[i][1])
 
     def moveLeft(self):
         for i in range(4):

@@ -54,7 +54,12 @@ class GameInstance:
             self.scene_loop()
 
             self.UI.set_scene("end")
+
+            StdDraw.clear(StdDraw.BLACK)
+            self.UI.draw((), (), 17)
+
             StdDraw.show(3000)
+            self.play = False
 
         print("Thanks for playing!")
 
