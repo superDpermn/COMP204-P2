@@ -8,7 +8,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/Tetris_2048_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/Tetris_2048_init.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/game_grid.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/game_grid.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/images/tetris_bg.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/images/tetris_bg.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/tetromino.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/tetromino.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/tile.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/tile.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/user_interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/user_interface.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

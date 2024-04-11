@@ -1,7 +1,6 @@
 import lib.stddraw as StdDraw  # used for drawing the tiles to display them
 from lib.color import Color  # used for coloring the tiles
 from animation import pickRandom
-from Tetris_2048_init import EDGE_LENGTH
 
 colorDictionary = {0: Color(205, 193, 180),
                    2: Color(238, 228, 218),
@@ -21,12 +20,18 @@ defaultColor = Color(60, 58, 50)
 
 
 class Tile:
-    HALF_EDGE = EDGE_LENGTH/2
+    HALF_EDGE = 15
     TILE_GAP = 1
 
-    startingValues = [2, 4]
+    startingValues = (2, 4)
     # font family and size used for displaying the tile number
     font_family, font_size = "Arial", 20
+
+    @classmethod
+    def UpdateConstants(cls, EDGE_LENGTH=30, GAP=1, startValues=(2, 4)):
+        cls.HALF_EDGE = EDGE_LENGTH/2
+        cls.TILE_GAP = GAP
+        cls.startingValues = startValues
 
     def __init__(self, value=None):
         self.value: int = value if value is not None else pickRandom(Tile.startingValues)

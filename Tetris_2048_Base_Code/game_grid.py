@@ -13,6 +13,7 @@ class GameGrid:
         # create the tetromino that is currently being moved on the game grid
         self.current_tetromino: Tetromino = starting_tetromino
         self.nextTetromino = Tetromino()
+        self.difficulty = "NORMAL"
         # the game_over flag shows whether the game is over or not
         self.game_over = False
 
