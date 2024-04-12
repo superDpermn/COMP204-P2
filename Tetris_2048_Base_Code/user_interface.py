@@ -202,7 +202,8 @@ class GameCanvas(UIBlock):
     """
     A UIBlock subclass that represents the game grid's visual part.
     """
-    def __init__(self, x=0, y=0, grid_w=12, grid_h=20, cell_edge=30, style=Style(padding=10), tetromino_view=None):
+    def __init__(self, x=0, y=0, grid_w=12, grid_h=20, cell_edge=30, style=Style(padding=10),
+                 tetromino_view=None, score_board=None):
         super().__init__(x, y, grid_w*cell_edge, grid_h*cell_edge, style)
         self.grid_h = grid_h
         self.grid_w = grid_w
@@ -211,6 +212,11 @@ class GameCanvas(UIBlock):
         self.grid_unset = True
         self.game_grid = None
         self.tetrominoView = tetromino_view
+        self.scoreBoard = score_board
+        self.deltaCounter = 0
+        self.scoreUpdateInterval = 200
+
+        self.score = 0
         self.paused = True
 
     # The finalize() method is called by the main class to connect the gameGrid and gameCanvas objects
@@ -260,6 +266,14 @@ class GameCanvas(UIBlock):
         if self.game_grid.current_tetromino is not None:
             self.game_grid.current_tetromino.animation_update(delta_time)
 
+        if self.deltaCounter > self.scoreUpdateInterval:
+            self.deltaCounter = 0
+            self.score += sum(self.game_grid.scoreList)
+            self.scoreBoard.text = str(self.score)
+            self.game_grid.scoreList.clear()
+        else:
+            self.deltaCounter += delta_time
+
     def onKeyInput(self, events=()):
         if not self.grid_unset and not self.paused:
             for event in events:
@@ -277,8 +291,8 @@ class GameCanvas(UIBlock):
                         if self.tetrominoView is not None:
                             self.tetrominoView.updateTetromino(self.game_grid.nextTetromino)
                 elif event.key == "space":
-                    # implement hard fall here
-                    pass
+                    while not self.game_grid.move_DOWN():
+                        pass
 
     def togglePause(self):
         self.paused = not self.paused

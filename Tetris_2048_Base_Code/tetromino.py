@@ -25,7 +25,7 @@ class Tetromino:
         Tile.UpdateConstants(cls.CELL_EDGE_LENGTH)
 
     def __init__(self):
-        self.type = pickRandom(["O", "L", "J", "T", "Z", "N", "I"])
+        self.type = pickRandom(["O", "L", "J", "T", "Z", "S", "I"])
         self.tilePositions = []
         self.rotationAxis = []
         self.assignTilePositions()
@@ -64,9 +64,9 @@ class Tetromino:
             xOffset = pickRandom(range(0, Tetromino.GRID_WIDTH - 3))
             self.tilePositions = [[0, 1+xOffset], [0, 2+xOffset], [1, xOffset], [1, 1+xOffset]]
             self.rotationAxis = [0, 1+xOffset]
-        elif self.type == "N":
+        elif self.type == "S":
             xOffset = pickRandom(range(0, Tetromino.GRID_WIDTH - 2))
-            self.tilePositions = [[0, xOffset], [0, 1+xOffset], [1, 1+xOffset], [1, 2+xOffset]]
+            self.tilePositions = [[1, xOffset], [0, 1+xOffset], [1, 1+xOffset], [1, 2+xOffset]]
             self.rotationAxis = [0, 1+xOffset]
         elif self.type == "I":
             xOffset = pickRandom(range(0, Tetromino.GRID_WIDTH - 1))

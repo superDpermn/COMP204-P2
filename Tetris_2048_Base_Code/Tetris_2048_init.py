@@ -42,18 +42,18 @@ grid_height_increment = UIButton(270, 180, 50, 50, "GH++")
 
 
 # ------------------------------In-Game Scene (Components)-------------------------------------
-tetromino_view = TetrominoView(420, 515, 120, 150)
-
-GridCanvas = GameCanvas(15, 15, 12, 20, EDGE_LENGTH,
-                        Style(background_color=Color(189, 180, 120),
-                              foreground_color=Color(117, 108, 51)),
-                        tetromino_view)
-
 score_label = UITextBox(390, 655, 195, 30, "Score:",
                         style=Style(font_size=20))
 
 score_value = UITextBox(390, 600, 195, 55, "0",
                         style=Style(foreground_color=StdDraw.DARK_BLUE, font_size=30))
+
+tetromino_view = TetrominoView(420, 515, 120, 150)
+
+GridCanvas = GameCanvas(15, 15, 12, 20, EDGE_LENGTH,
+                        Style(background_color=Color(189, 180, 120),
+                              foreground_color=Color(117, 108, 51)),
+                        tetromino_view, score_value)
 
 next_tetromino_label = UITextBox(390, 550, 195, 40, "Next",
                                  Style(background_color=Color(200, 200, 200)))
