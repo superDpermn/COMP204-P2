@@ -37,7 +37,6 @@ class GameInstance:
 
             # clear the canvas
             StdDraw.clear(StdDraw.BLACK)
-
             if self.UI.canvas.game_grid.game_over:
                 break
         return True

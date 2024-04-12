@@ -1,4 +1,5 @@
 from tetromino import Tetromino
+from tile import Tile
 
 
 class GameGrid:
@@ -7,7 +8,10 @@ class GameGrid:
         # set the dimensions of the game grid as the given arguments
         self.grid_height = grid_size[1]
         self.grid_width = grid_size[0]
-        self.tile_matrix = [[None for i in range(self.grid_width)] for j in range(self.grid_height)]
+        self.tile_matrix: list[list[Tile | None]] = [
+            [None for i in range(self.grid_width)] for j in range(self.grid_height)
+        ]
+        self.scoreList: list[int] = []
         # create a tile matrix to store the tiles locked on the game grid
         # self.tile_matrix = np.full((grid_h, grid_w), None)
         # create the tetromino that is currently being moved on the game grid
@@ -23,6 +27,54 @@ class GameGrid:
         for t in range(4):
             pos = self.current_tetromino.tilePositions[t]
             self.tile_matrix[pos[0]][pos[1]] = self.current_tetromino.tiles[t]
+
+        mergeRow = self.grid_height-1
+        while mergeRow > 0:  # ignore the topmost row for this loop
+            didMerge = False
+            for col in range(self.grid_width):
+                currentTile = self.tile_matrix[mergeRow][col]
+                currentNB = self.tile_matrix[mergeRow-1][col]
+                if isinstance(currentTile, Tile) and isinstance(currentNB, Tile):
+                    if currentTile.value == currentNB.value:
+                        self.scoreList.append(currentTile.value * 2)
+
+                        self.tile_matrix[mergeRow][col].value = self.tile_matrix[mergeRow][col].value * 2
+                        self.tile_matrix[mergeRow][col].updateColor()
+                        self.tile_matrix[mergeRow-1][col] = None
+
+                        for slideIndex in range(mergeRow-1, 0, -1):
+                            self.tile_matrix[slideIndex][col] = self.tile_matrix[slideIndex-1][col]
+                        self.tile_matrix[0][col] = None
+                        # check from the very bottom again
+                        mergeRow = self.grid_height-1
+                        didMerge = True
+            # this is effective only if there are no more merge operations left for the current column
+            if not didMerge:
+                mergeRow -= 1
+
+        clearRow = self.grid_height-1
+        while clearRow > 0:
+            combo = 0
+            comboScore = 0
+            for col in range(self.grid_width):
+                if self.tile_matrix[clearRow][col] is not None:
+                    combo += 1
+                    comboScore += self.tile_matrix[clearRow][col].value
+                else:
+                    break
+            if combo == self.grid_width:
+                # Take a note of the score
+                self.scoreList.append(comboScore)
+                # Clear current row
+                for clearCol in range(self.grid_width):
+                    self.tile_matrix[clearRow][clearCol] = None
+                # Slide the remaining tiles
+                for h in range(clearRow, 0, -1):
+                    self.tile_matrix[h] = self.tile_matrix[h-1]
+                self.tile_matrix[0] = [None for i in range(self.grid_width)]
+                # Check again as another full row may have replaced the current row
+            else:
+                clearRow -= 1
         # ...
 
         # create new tetromino
