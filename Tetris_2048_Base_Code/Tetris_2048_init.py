@@ -7,15 +7,18 @@ Settings = {"EDGE_LENGTH": 30,
             "DIFFICULTY": "NORMAL"}
 # The visual edge length of each game tile (in pixels). This value is used for all relevant tasks
 EDGE_LENGTH = Settings.get("EDGE_LENGTH", 30)
+header_font_size = 40  # Font size for headings
+content_font_size = 20
 
 # -------------------------------Main Menu Scene (Components)----------------------------------
-gameLogo = UIImage(38, 453, 524, 197, "TETRIS2048LOGO.png")
+gameLogo = UIImage(38, 400, 524, 197, "Logo.png")
 
 startButton = UIButton(200, 200, 200, 70, "Start Game",
-                       Style(background_color=StdDraw.BOOK_LIGHT_BLUE))
+                       Style(background_color=Color(102, 178, 255), border_width=0.005, border_color=Color(150, 150, 150)))
+
 
 settingsButton = UIButton(200, 100, 200, 70, "Settings",
-                          Style(background_color=Color(150, 150, 200),
+                          Style(background_color=Color(255, 153, 51),
                                 border_color=Color(150, 150, 150), border_width=0.005))
 # ---------------------------------------------------------------------------------------------
 
@@ -104,6 +107,25 @@ pauseButton.onclick = lambda: GridCanvas.togglePause()
 startButton.onclick = lambda: UI.set_scene("game")
 settingsButton.onclick = lambda: UI.set_scene("settings")
 backToMainMenuButton.onclick = lambda: UI.set_scene("main")
+
+startButton.style.font_size = header_font_size
+startButton.style.font = "Arial Bold"
+
+settingsButton.style.font_size = header_font_size
+settingsButton.style.font = "Arial Bold"
+settingsMenuLabel.style.font_size = header_font_size
+settingsMenuLabel.style.font = "Arial Bold"
+
+backToMainMenuButton.style.font_size = content_font_size
+backToMainMenuButton.style.font = "Arial"
+
+settingsConfirmButton.style.font_size = content_font_size
+settingsConfirmButton.style.font = "Arial"
+score_label.style.font_size = content_font_size
+score_label.style.font = "Arial"
+
+score_value.style.font_size = header_font_size
+score_value.style.font = "Arial Bold"
 
 
 def update_settings():

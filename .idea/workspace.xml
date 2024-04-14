@@ -5,12 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2d82749b-f5a4-49c3-a4c0-443fdfb9ce67" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/COMP204-P2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/COMP204-P2.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/Tetris_2048.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/Tetris_2048.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/Tetris_2048_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/Tetris_2048_init.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/game_grid.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/game_grid.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/tetromino.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/tetromino.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tetris_2048_Base_Code/user_interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tetris_2048_Base_Code/user_interface.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +75,7 @@
     "Python.Tetris_2048_init.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "DEV-Bahri",
+    "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/Users/Bahri Efe/Desktop/COMP204-P2-main/COMP204-P2-main",
     "run.code.analysis.last.selected.profile": "pProject Default",
@@ -95,7 +93,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-0509580d9d50-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.14494.241" />
+        <option value="bundled-python-sdk-5a2391486177-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.13763.11" />
       </set>
     </attachedChunks>
   </component>
