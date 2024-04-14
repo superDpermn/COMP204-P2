@@ -1,6 +1,8 @@
 from tetromino import Tetromino
 from tile import Tile
 
+difficultyIntervalMultipliers = {"EASY": 1.4, "NORMAL": 1, "HARD": 0.7}
+
 
 class GameGrid:
     def __init__(self, grid_size: tuple[int, int] = (12, 20),
@@ -18,10 +20,19 @@ class GameGrid:
         self.current_tetromino: Tetromino = starting_tetromino
         self.nextTetromino = Tetromino()
         self.difficulty = "NORMAL"
+        self.auto_fall_interval = 1000
         # the game_over flag shows whether the game is over or not
         self.game_over = False
+        self.placed_count = 0
+
+    def set_difficulty(self, difficulty):
+        self.difficulty = difficulty
+        self.auto_fall_interval = difficultyIntervalMultipliers.get(self.difficulty, 1)*1000
 
     def place_tetromino(self):
+        self.placed_count += 1
+        self.auto_fall_interval = ((difficultyIntervalMultipliers.get(self.difficulty, 1)
+                                   * max((1000-self.placed_count), 0)) + 150)
         # ...
         # game logic
         for t in range(4):

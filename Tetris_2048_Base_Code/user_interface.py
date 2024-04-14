@@ -130,6 +130,7 @@ class Style:
         self.border_width = kwargs.get("border_width", 0)
         self.padding = kwargs.get("padding", 0)
         self.font_size = kwargs.get("font_size", 16)
+        self.font = kwargs.get("font", "Arial")
 
 
 class UIBlock:
@@ -213,8 +214,11 @@ class GameCanvas(UIBlock):
         self.game_grid = None
         self.tetrominoView = tetromino_view
         self.scoreBoard = score_board
-        self.deltaCounter = 0
+
+        self.scoreUpdateCounter = 0
         self.scoreUpdateInterval = 200
+        self.autoFallCounter = 0
+        self.autoFallInterval = 1500
 
         self.score = 0
         self.paused = True
@@ -224,6 +228,7 @@ class GameCanvas(UIBlock):
         self.game_grid = grid
         self.grid_h, self.grid_w = self.game_grid.grid_height, self.game_grid.grid_width
         self.box_width, self.box_height = self.grid_w*self.edge_length, self.grid_h*self.edge_length
+        self.y = 685 - self.box_height
         Tetromino.set_grid(self)
         self.game_grid.tile_matrix = [
             [None for i in range(self.game_grid.grid_width)]
@@ -232,6 +237,7 @@ class GameCanvas(UIBlock):
         self.game_grid.current_tetromino = Tetromino()
         self.game_grid.nextTetromino = Tetromino()
         self.tetrominoView.updateTetromino(self.game_grid.nextTetromino)
+        self.autoFallInterval = self.game_grid.auto_fall_interval
         self.grid_unset = False
         self.paused = False
 
@@ -266,13 +272,22 @@ class GameCanvas(UIBlock):
         if self.game_grid.current_tetromino is not None:
             self.game_grid.current_tetromino.animation_update(delta_time)
 
-        if self.deltaCounter > self.scoreUpdateInterval:
-            self.deltaCounter = 0
+        if self.scoreUpdateCounter > self.scoreUpdateInterval:
+            self.scoreUpdateCounter = 0
             self.score += sum(self.game_grid.scoreList)
             self.scoreBoard.text = str(self.score)
             self.game_grid.scoreList.clear()
         else:
-            self.deltaCounter += delta_time
+            self.scoreUpdateCounter += delta_time
+
+        if self.autoFallCounter > self.game_grid.auto_fall_interval:
+            self.autoFallCounter = 0
+            if not self.paused:
+                if self.game_grid.move_DOWN():  # executes the move_DOWN() method, then evaluates
+                    if self.tetrominoView is not None:
+                        self.tetrominoView.updateTetromino(self.game_grid.nextTetromino)
+        else:
+            self.autoFallCounter += delta_time
 
     def onKeyInput(self, events=()):
         if not self.grid_unset and not self.paused:
@@ -290,9 +305,13 @@ class GameCanvas(UIBlock):
                     if self.game_grid.move_DOWN():  # executes the move_DOWN() method, then evaluates
                         if self.tetrominoView is not None:
                             self.tetrominoView.updateTetromino(self.game_grid.nextTetromino)
+                        self.autoFallInterval = self.game_grid.auto_fall_interval
                 elif event.key == "space":
                     while not self.game_grid.move_DOWN():
                         pass
+                    if self.tetrominoView is not None:
+                        self.tetrominoView.updateTetromino(self.game_grid.nextTetromino)
+                    self.autoFallInterval = self.game_grid.auto_fall_interval
 
     def togglePause(self):
         self.paused = not self.paused

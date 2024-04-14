@@ -66,7 +66,7 @@ class Tetromino:
             self.rotationAxis = [0, 1+xOffset]
         elif self.type == "S":
             xOffset = pickRandom(range(0, Tetromino.GRID_WIDTH - 2))
-            self.tilePositions = [[1, xOffset], [0, 1+xOffset], [1, 1+xOffset], [1, 2+xOffset]]
+            self.tilePositions = [[0, xOffset], [0, 1+xOffset], [1, 1+xOffset], [1, 2+xOffset]]
             self.rotationAxis = [0, 1+xOffset]
         elif self.type == "I":
             xOffset = pickRandom(range(0, Tetromino.GRID_WIDTH - 1))
@@ -130,7 +130,7 @@ class Tetromino:
     def draw(self, x=None, y=None):
         if x is not None and y is not None:
             for i in range(4):
-                self.tiles[i].draw(y-self.tilePositions[i][0]*Tetromino.CELL_EDGE_LENGTH,
+                self.tiles[i].draw(y-(self.tilePositions[i][0]-self.rotationAxis[0]+1)*Tetromino.CELL_EDGE_LENGTH,
                                    x+(self.tilePositions[i][1]-self.rotationAxis[1]+1)*Tetromino.CELL_EDGE_LENGTH)
         else:
             for i in range(4):
