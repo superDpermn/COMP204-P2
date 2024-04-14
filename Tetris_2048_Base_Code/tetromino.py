@@ -47,6 +47,7 @@ class Tetromino:
         if self.type == "O":
             xOffset = pickRandom(range(0, Tetromino.GRID_WIDTH - 2))
             self.tilePositions = [[0, xOffset], [0, 1+xOffset], [1, xOffset], [1, 1+xOffset]]
+            # TODO: fix the rotation logic for the "O" type.
             self.rotationAxis = [1, xOffset]
         elif self.type == "L":
             xOffset = pickRandom(range(0, Tetromino.GRID_WIDTH - 2))
@@ -140,6 +141,11 @@ class Tetromino:
                                    - self.animation_positions[i][0],
                                    Tetromino.box_offset_x
                                    + self.animation_positions[i][1])
+            self.draw_border()
+
+    def draw_border(self):
+
+        pass
 
     def moveLeft(self):
         for i in range(4):

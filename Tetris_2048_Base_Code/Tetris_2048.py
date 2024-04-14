@@ -42,14 +42,11 @@ class GameInstance:
         return True
 
     def run(self):
-        # game_canvas = UI.canvas
-
-        # It is assumed at this point that double buffering is enabled.
-
         # Set the current scene before creating the program window
         self.UI.launch("main")
 
         while self.play:
+            # comment the next line to test game end screen
             self.scene_loop()
 
             self.UI.set_scene("end")

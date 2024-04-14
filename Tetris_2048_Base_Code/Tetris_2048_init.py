@@ -15,13 +15,13 @@ gameLogo = UIImage(120, 400, 360, 206, "Logo.png")
 
 startButton = UIButton(200, 200, 200, 70, "Start Game",
                        Style(background_color=Color(102, 178, 255),
-                             border_width=0.005, border_color=Color(150, 150, 150),
+                             border_width=0.005, border_color=Color(255, 255, 255),
                              font_size=header_font_size, font="Arial Bold"))
 
 
 settingsButton = UIButton(200, 100, 200, 70, "Settings",
                           Style(background_color=Color(255, 153, 51),
-                                border_color=Color(150, 150, 150), border_width=0.005,
+                                border_color=Color(255, 255, 255), border_width=0.005,
                                 font_size=header_font_size, font="Arial Bold"))
 
 mainMenuBG = UIImage(0, 0, 600, 700, "tetris_bg.jpg")
@@ -31,41 +31,41 @@ mainMenuBG = UIImage(0, 0, 600, 700, "tetris_bg.jpg")
 # -----------------------------Settings Menu Scene (Components)--------------------------------
 settingsMenuBackground = UIImage(0, 0, 600, 700, "tetris_bg.jpg")
 
-backToMainMenuButton = UIButton(15, 635, 100, 50, "<-- Back",
+backToMainMenuButton = UIButton(15, 635, 100, 50, "<<< Back",
                                 Style(font_size=content_font_size))
 
 settingsConfirmButton = UIButton(485, 635, 100, 50, "Confirm",
-                                 Style(foreground_color=StdDraw.GREEN, font_size=content_font_size))
+                                 Style(foreground_color=StdDraw.DARK_GREEN, font_size=content_font_size))
 
 settingsMenuLabel = UITextBox(130, 635, 340, 50, "SETTINGS",
                               Style(background_color=StdDraw.WHITE,
                                     font_size=header_font_size, font="Arial Bold"))
 
-grid_width_label = UITextBox(250, 560, 100, 20, "Grid Width"
+grid_width_label = UITextBox(250, 485, 100, 20, "Grid Width"
                              , Style(background_color=Color(200, 200, 200)))
-grid_width_decrement = UIButton(185, 515, 50, 50, "-", Style(font_size=30))
-grid_width_display = UITextBox(250, 500, 100, 60, "12", Style(font_size=30))
-grid_width_increment = UIButton(365, 515, 50, 50, "+", Style(font_size=30))
+grid_width_decrement = UIButton(185, 440, 50, 50, "-", Style(font_size=30))
+grid_width_display = UITextBox(250, 425, 100, 60, "12", Style(font_size=30))
+grid_width_increment = UIButton(365, 440, 50, 50, "+", Style(font_size=30))
 
-grid_height_label = UITextBox(250, 445, 100, 20, "Grid Height"
+grid_height_label = UITextBox(250, 375, 100, 20, "Grid Height"
                               , Style(background_color=Color(200, 200, 200)))
-grid_height_decrement = UIButton(185, 400, 50, 50, "-", Style(font_size=30))
-grid_height_display = UITextBox(250, 385, 100, 60, "20", Style(font_size=30))
-grid_height_increment = UIButton(365, 400, 50, 50, "+", Style(font_size=30))
+grid_height_decrement = UIButton(185, 330, 50, 50, "-", Style(font_size=30))
+grid_height_display = UITextBox(250, 315, 100, 60, "20", Style(font_size=30))
+grid_height_increment = UIButton(365, 330, 50, 50, "+", Style(font_size=30))
 
-difficulty_bg = UIBlock(120, 235, 360, 145,
+difficulty_bg = UIBlock(120, 135, 360, 145,
                         Style(background_color=Color(150, 150, 150)))
-difficulty_label = UITextBox(250, 315, 100, 50, "Difficulty")
-difficultySelector_easy = UIButton(135, 250, 100, 50, "Easy",
+difficulty_label = UITextBox(135, 215, 330, 50, "Difficulty")
+difficultySelector_easy = UIButton(135, 150, 100, 50, "Slow",
                                    Style(font_size=30, foreground_color=StdDraw.GREEN,
-                                         background_color=StdDraw.BLACK, border_color=StdDraw.GREEN))
-difficultySelector_normal = UIButton(250, 250, 100, 50, "Normal",
-                                     Style(font_size=30, foreground_color=StdDraw.GRAY,
-                                           background_color=StdDraw.BLACK, border_color=StdDraw.GREEN,
+                                         background_color=StdDraw.BLACK, border_color=StdDraw.YELLOW))
+difficultySelector_normal = UIButton(250, 150, 100, 50, "Normal",
+                                     Style(font_size=30, foreground_color=Color(200, 200, 200),
+                                           background_color=StdDraw.BLACK, border_color=StdDraw.YELLOW,
                                            border_width=0.005))
-difficultySelector_hard = UIButton(365, 250, 100, 50, "Hard",
-                                   Style(font_size=30, foreground_color=StdDraw.DARK_RED,
-                                         background_color=StdDraw.BLACK, border_color=StdDraw.GREEN))
+difficultySelector_hard = UIButton(365, 150, 100, 50, "Fast",
+                                   Style(font_size=30, foreground_color=Color(255, 100, 100),
+                                         background_color=StdDraw.BLACK, border_color=StdDraw.YELLOW))
 # ---------------------------------------------------------------------------------------------
 
 
@@ -89,7 +89,8 @@ next_tetromino_label = UITextBox(390, 550, 195, 40, "Next",
                                  Style(background_color=Color(200, 200, 200)))
 
 next_tetromino_bg = UIBlock(390, 390, 195, 195,
-                            Style(background_color=Color(189, 180, 120)))
+                            Style(background_color=Color(182, 150, 129),
+                                  border_color=Color(104, 85, 72), border_width=0.005))
 
 pauseButton = UIButton(390, 255, 195, 125,
                        style=Style(background_color=StdDraw.WHITE, border_color=StdDraw.GRAY))
@@ -101,8 +102,8 @@ InGameBG = UIImage(0, 0, 600, 700, "tetris_bg.jpg")
 
 
 # ------------------------------Game Over Scene (Components)-----------------------------------
-end_text = UITextBox(200, 300, 200, 100, "Game Over",
-                     Style(font_size=30, background_color=Color(139, 142, 214),
+end_text = UITextBox(120, 400, 360, 200, "Game Over",
+                     Style(font_size=50, background_color=Color(139, 142, 214),
                            border_width=0.005, border_color=StdDraw.WHITE))
 
 bg_pattern = UIImage(0, 0, 600, 700, "tetris_bg.jpg")

@@ -87,6 +87,8 @@ class GameGrid:
             else:
                 clearRow -= 1
         # ...
+        while self.handleNonConnectedTiles():
+            continue
 
         # create new tetromino
         self.current_tetromino = self.nextTetromino
@@ -150,3 +152,36 @@ class GameGrid:
                     break
             if confirm:
                 self.current_tetromino.moveRight()
+
+    def handleNonConnectedTiles(self):
+        connectedPositions = [(self.grid_height-1, col) for col in range(self.grid_width)
+                              if self.tile_matrix[self.grid_height-1][col] is not None]
+
+        iterationSuccess = True
+        while iterationSuccess:
+            iterationSuccess = False
+            for row in range(self.grid_height-2, 0, -1):
+                for col in range(self.grid_width):
+                    if self.tile_matrix[row][col] is not None and (row, col) not in connectedPositions:
+                        if (row + 1, col) in connectedPositions:
+                            connectedPositions.append((row, col))
+                            iterationSuccess = True
+                            continue
+                        if col > 0:
+                            if (row, col-1) in connectedPositions:
+                                connectedPositions.append((row, col))
+                                iterationSuccess = True
+                                continue
+                        if col < self.grid_width-1:
+                            if (row, col+1) in connectedPositions:
+                                connectedPositions.append((row, col))
+                                iterationSuccess = True
+                                continue
+        ret = False
+        for row in range(self.grid_height-2, 0, -1):
+            for col in range(self.grid_width):
+                if self.tile_matrix[row][col] is not None and (row, col) not in connectedPositions:
+                    self.tile_matrix[row+1][col] = self.tile_matrix[row][col]
+                    self.tile_matrix[row][col] = None
+                    ret = True
+        return ret
