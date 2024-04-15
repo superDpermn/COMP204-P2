@@ -1,7 +1,7 @@
 from tetromino import Tetromino
 from tile import Tile
 
-difficultyIntervalMultipliers = {"EASY": 1.4, "NORMAL": 1, "HARD": 0.7}
+difficultyIntervalMultipliers = {"EASY": 1.2, "NORMAL": 1, "HARD": 0.5}
 
 
 class GameGrid:
@@ -20,7 +20,7 @@ class GameGrid:
         self.current_tetromino: Tetromino = starting_tetromino
         self.nextTetromino = Tetromino()
         self.difficulty = "NORMAL"
-        self.auto_fall_interval = 1000
+        self.auto_fall_interval = 700
         # the game_over flag shows whether the game is over or not
         self.game_over = False
         self.placed_count = 0

@@ -28,10 +28,9 @@ class Tile:
     font_family, font_size = "Arial", 20
 
     @classmethod
-    def UpdateConstants(cls, EDGE_LENGTH=30, GAP=1, startValues=(2, 4)):
+    def UpdateConstants(cls, EDGE_LENGTH=30, GAP=1):
         cls.HALF_EDGE = EDGE_LENGTH/2
         cls.TILE_GAP = GAP
-        cls.startingValues = startValues
 
     def __init__(self, value=None):
         self.value: int = value if value is not None else pickRandom(Tile.startingValues)
@@ -39,7 +38,7 @@ class Tile:
         self.destroyMe = False
 
         self.background_color = colorDictionary.get(self.value, defaultColor)
-        self.foreground_color = Color(249, 246, 242) if self.value > 4 else Color(119, 110, 101)
+        self.foreground_color = Color(249, 246, 242) if (4 < self.value < 128) else Color(119, 110, 101)
 
     def merge(self, otherTile):
         if not self.isEmpty:

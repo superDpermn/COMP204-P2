@@ -306,12 +306,14 @@ class GameCanvas(UIBlock):
                         if self.tetrominoView is not None:
                             self.tetrominoView.updateTetromino(self.game_grid.nextTetromino)
                         self.autoFallInterval = self.game_grid.auto_fall_interval
+                        self.autoFallCounter = 0
                 elif event.key == "space":
                     while not self.game_grid.move_DOWN():
                         pass
                     if self.tetrominoView is not None:
                         self.tetrominoView.updateTetromino(self.game_grid.nextTetromino)
                     self.autoFallInterval = self.game_grid.auto_fall_interval
+                    self.autoFallCounter = 0
 
     def togglePause(self):
         self.paused = not self.paused
@@ -352,6 +354,7 @@ class UITextBox(UIBlock):
 
     def draw(self):
         super().draw()
+        StdDraw.setFontFamily(self.style.font)
         StdDraw.setFontSize(self.style.font_size)
         StdDraw.setPenColor(self.style.foreground_color)
         StdDraw.text(self.center_x, self.center_y, self.text)

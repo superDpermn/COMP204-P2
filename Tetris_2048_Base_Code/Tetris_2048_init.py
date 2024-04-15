@@ -55,7 +55,7 @@ grid_height_increment = UIButton(365, 330, 50, 50, "+", Style(font_size=30))
 
 difficulty_bg = UIBlock(120, 135, 360, 145,
                         Style(background_color=Color(150, 150, 150)))
-difficulty_label = UITextBox(135, 215, 330, 50, "Difficulty")
+difficulty_label = UITextBox(135, 215, 330, 50, "Game Speed", Style(font_size=30))
 difficultySelector_easy = UIButton(135, 150, 100, 50, "Slow",
                                    Style(font_size=30, foreground_color=StdDraw.GREEN,
                                          background_color=StdDraw.BLACK, border_color=StdDraw.YELLOW))
