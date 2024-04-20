@@ -10,7 +10,7 @@ class Scene:
     """
     def __init__(self, *actors, isGame=False, sceneBackground=None):
         self.is_game_scene = isGame
-        self.actors = actors
+        self.actors = list(actors)
         self.paused = True  # scenes are paused by default, to prevent unexpected behavior
         self.scene_background = sceneBackground
 
@@ -97,8 +97,11 @@ class UIContainer:
         else:
             print("Error: Couldn't find starting scene, launch cancelled")
 
-    def reset(self):  # Unfinished
-        pass
+    def reset(self, newCanvas):  # Unfinished
+        self.set_scene("main")
+        self.scenes.get("game").actors.remove(self.canvas)
+        self.canvas = newCanvas
+        self.scenes.get("game").actors.append(newCanvas)
 
     def askPlayAgain(self):
         return False
@@ -238,6 +241,7 @@ class GameCanvas(UIBlock):
         self.game_grid.nextTetromino = Tetromino()
         self.tetrominoView.updateTetromino(self.game_grid.nextTetromino)
         self.autoFallInterval = self.game_grid.auto_fall_interval
+        self.score = 0
         self.grid_unset = False
         self.paused = False
 

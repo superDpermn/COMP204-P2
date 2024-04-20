@@ -10,6 +10,7 @@ EDGE_LENGTH = Settings.get("EDGE_LENGTH", 30)
 header_font_size = 40  # Font size for headings
 content_font_size = 20
 
+
 # -------------------------------Main Menu Scene (Components)----------------------------------
 gameLogo = UIImage(120, 400, 360, 206, "Logo.png")
 
@@ -17,7 +18,6 @@ startButton = UIButton(200, 200, 200, 70, "Start Game",
                        Style(background_color=Color(102, 178, 255),
                              border_width=0.005, border_color=Color(255, 255, 255),
                              font_size=header_font_size, font="Arial Bold"))
-
 
 settingsButton = UIButton(200, 100, 200, 70, "Settings",
                           Style(background_color=Color(255, 153, 51),
@@ -79,11 +79,28 @@ score_value = UITextBox(390, 600, 195, 55, "0",
 
 tetromino_view = TetrominoView(420, 515, 120, 150)
 
-GridCanvas = GameCanvas(15, 15, 12, 20, EDGE_LENGTH,
-                        Style(background_color=Color(182, 150, 129),
-                              foreground_color=Color(104, 85, 72),
-                              border_color=Color(104, 85, 72), border_width=0.005),
-                        tetromino_view, score_value)
+
+def createDefaultCanvas(grid=None):
+    global score_value
+    score_value.text = "0"
+    if grid is None:
+        return GameCanvas(15, 75, 12, 20, EDGE_LENGTH,
+               Style(background_color=Color(182, 150, 129),
+                     foreground_color=Color(104, 85, 72),
+                     border_color=Color(104, 85, 72), border_width=0.005),
+               tetromino_view, score_value)
+    else:
+        temp = GameCanvas(15, 75, grid.grid_width, grid.grid_height, EDGE_LENGTH,
+                          Style(background_color=Color(182, 150, 129),
+                                foreground_color=Color(104, 85, 72),
+                                border_color=Color(104, 85, 72), border_width=0.005),
+                          tetromino_view, score_value)
+        temp.finalize(grid)
+        return temp
+
+
+
+GridCanvas = createDefaultCanvas()
 
 next_tetromino_label = UITextBox(390, 550, 195, 40, "Next",
                                  Style(background_color=Color(200, 200, 200)))
@@ -145,12 +162,6 @@ def togglePauseWithEffect():
         pauseButton.style.border_width = 0
 
 
-pauseButton.onclick = lambda: togglePauseWithEffect()
-startButton.onclick = lambda: UI.set_scene("game")
-settingsButton.onclick = lambda: UI.set_scene("settings")
-backToMainMenuButton.onclick = lambda: UI.set_scene("main")
-
-
 def difficultyUpdate(newDiff: str):
     if newDiff in ("EASY", "NORMAL", "HARD"):
         difficultySelector_easy.style.border_width = 0
@@ -167,21 +178,20 @@ def difficultyUpdate(newDiff: str):
             difficultySelector_hard.style.border_width = 0.005
 
 
-difficultySelector_easy.onclick = lambda: difficultyUpdate("EASY")
-difficultySelector_normal.onclick = lambda: difficultyUpdate("NORMAL")
-difficultySelector_hard.onclick = lambda: difficultyUpdate("HARD")
-
-
-def update_settings():
-    if GridCanvas.grid_unset:
-        return
+def update_settings(newGrid=None):
+    global GridCanvas
     GridCanvas.edge_length = Settings.get("EDGE_LENGTH", 30)
     newGW = Settings.get("GRID_WIDTH", 12)
     newGH = Settings.get("GRID_HEIGHT", 20)
-    GridCanvas.game_grid.grid_height, GridCanvas.game_grid.grid_width = newGH, newGW
-    GridCanvas.game_grid.set_difficulty(Settings.get("DIFFICULTY", "NORMAL"))
-    GridCanvas.finalize(GridCanvas.game_grid)
-    print("Settings saved successfully")
+    if newGrid is not None:
+        newGrid.grid_height, newGrid.grid_width = newGH, newGW
+        newGrid.set_difficulty(Settings.get("DIFFICULTY", "NORMAL"))
+        GridCanvas.finalize(newGrid)
+    else:
+        GridCanvas.game_grid.grid_height, GridCanvas.game_grid.grid_width = newGH, newGW
+        GridCanvas.game_grid.set_difficulty(Settings.get("DIFFICULTY", "NORMAL"))
+        GridCanvas.finalize(GridCanvas.game_grid)
+    return GridCanvas
 
 
 def anyUpdate(updateType=None):
@@ -190,7 +200,7 @@ def anyUpdate(updateType=None):
             Settings.update(
                 {"GRID_WIDTH": Settings.get("GRID_WIDTH", 12) + 1 if Settings.get("GRID_WIDTH", 12) < 12 else 12}
             )
-            grid_width_display.text = str(int(grid_width_display.text)+1 if
+            grid_width_display.text = str(int(grid_width_display.text) + 1 if
                                           int(grid_width_display.text) < 12 else 12)
         elif updateType == "GW-":
             Settings.update(
@@ -214,11 +224,19 @@ def anyUpdate(updateType=None):
             return
 
 
+pauseButton.onclick = lambda: togglePauseWithEffect()
+startButton.onclick = lambda: UI.set_scene("game")
+settingsButton.onclick = lambda: UI.set_scene("settings")
+backToMainMenuButton.onclick = lambda: UI.set_scene("main")
+
+difficultySelector_easy.onclick = lambda: difficultyUpdate("EASY")
+difficultySelector_normal.onclick = lambda: difficultyUpdate("NORMAL")
+difficultySelector_hard.onclick = lambda: difficultyUpdate("HARD")
+
 grid_width_increment.onclick = lambda: anyUpdate("GW+")
 grid_width_decrement.onclick = lambda: anyUpdate("GW-")
 grid_height_increment.onclick = lambda: anyUpdate("GH+")
 grid_height_decrement.onclick = lambda: anyUpdate("GH-")
-
 
 settingsConfirmButton.onclick = lambda: update_settings()
 # ---------------------------------------------------------------------------------------------

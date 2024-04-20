@@ -8,6 +8,9 @@ import lib.stddraw as StdDraw  # for creating an animation with user interaction
 from game_grid import GameGrid
 from tetromino import Tetromino  # the class for modeling the tetrominoes
 from Tetris_2048_init import get_finalized_UI as getUI
+from Tetris_2048_init import createDefaultCanvas as newCanvas
+from Tetris_2048_init import update_settings as finalize_reset
+from Tetris_2048_init import Settings
 from InputController import InputController
 
 
@@ -55,9 +58,14 @@ class GameInstance:
             self.UI.draw((), (), 17)
 
             StdDraw.show(3000)
-            self.play = False
+            # self.play = False
+            self.resetGrid()
 
         print("Thanks for playing!")
+
+    def resetGrid(self):
+        self.grid = GameGrid((Settings.get("GRID_WIDTH", 12), Settings.get("GRID_HEIGHT", 20)))
+        self.UI.reset(finalize_reset(self.grid))
 
 
 # Create new game instance
