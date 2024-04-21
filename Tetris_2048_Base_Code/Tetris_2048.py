@@ -12,6 +12,7 @@ from Tetris_2048_init import update_settings as finalize_reset
 from Tetris_2048_init import Settings
 from Tetris_2048_init import updateScores
 from Tetris_2048_init import registerScoreChanges
+from Tetris_2048_init import dialog, resetDialog
 from InputController import InputController
 
 
@@ -29,6 +30,8 @@ class GameInstance:
         # define the condition to run the program loop for
         self.play = True
 
+        self.dialogAnswer = 0
+
     def scene_loop(self):
         while True:
             self.inputController.update()
@@ -45,24 +48,45 @@ class GameInstance:
                 break
         return True
 
+    def game_end_loop(self):
+        self.UI.scenes.get("end").actors[-1].text = str(self.UI.canvas.score)
+        while True:
+            self.inputController.update()
+            self.UI.draw(self.inputController.getKeyEvents(), self.inputController.mouseEvent, 17)
+            StdDraw.show(17)
+
+            StdDraw.clear(StdDraw.BLACK)
+
+            self.dialogAnswer = dialog()
+            if self.dialogAnswer == 1:
+                self.play = True
+                self.dialogAnswer = 0
+                resetDialog()
+                return False
+            elif self.dialogAnswer == 2:
+                self.play = False
+                self.dialogAnswer = 0
+                resetDialog()
+                return True
+
     def run(self):
+        self.update_scores()
         # Set the current scene before creating the program window
         self.UI.launch("main")
 
         while self.play:
-            # comment the next line to test game end screen
-            self.scene_loop()
+            self.UI.set_scene("main")
 
+            self.scene_loop()
             self.update_scores()
 
             self.UI.set_scene("end")
 
-            StdDraw.clear(StdDraw.BLACK)
-            self.UI.draw((), (), 17)
+            if self.game_end_loop():
+                break
 
-            StdDraw.show(3000)
-            # self.play = False
-            self.resetGrid()
+            if self.play:
+                self.resetGrid()
 
         print("Thanks for playing!")
 

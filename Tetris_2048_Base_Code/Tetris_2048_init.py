@@ -149,11 +149,33 @@ InGameBG = UIImage(0, 0, 600, 700, "tetris_bg.jpg")
 
 
 # ------------------------------Game Over Scene (Components)-----------------------------------
-end_text = UITextBox(120, 400, 360, 200, "Game Over",
+end_text = UITextBox(120, 520, 360, 160, "Game Over",
                      Style(font_size=50, background_color=Color(139, 142, 214),
                            border_width=0.005, border_color=StdDraw.WHITE))
 
 bg_pattern = UIImage(0, 0, 600, 700, "tetris_bg.jpg")
+
+restartAnswer = 0
+
+restartButton = UIButton(120, 130, 360, 70, "Play Again",
+                         Style(background_color=Color(102, 178, 255),
+                               border_width=0.005, border_color=Color(255, 255, 255),
+                               font_size=header_font_size, font="Arial Bold"))
+
+quitButton = UIButton(120, 50, 360, 70, "Quit",
+                      Style(background_color=Color(255, 153, 51),
+                            border_color=Color(255, 255, 255), border_width=0.005,
+                            font_size=header_font_size, font="Arial Bold"))
+
+questionLabel = UITextBox(120, 220, 360, 100, "Do you want to play again?",
+                          Style(font_size=30, background_color=Color(139, 142, 214),
+                                foreground_color=StdDraw.WHITE,
+                                border_width=0.005, border_color=StdDraw.WHITE))
+
+end_score_label = UITextBox(120, 450, 360, 50, "Score",
+                            Style(font_size=30))
+end_score_value = UITextBox(120, 400, 360, 50, "",
+                            Style(font_size=30))
 # ---------------------------------------------------------------------------------------------
 
 
@@ -176,7 +198,8 @@ gameScene = Scene(InGameBG, GridCanvas, score_label, score_value, pauseButton,
                   pauseSymbol, next_tetromino_bg, next_tetromino_label, tetromino_view,
                   isGame=True)
 
-gameOver = Scene(bg_pattern, end_text)
+gameOver = Scene(bg_pattern, end_text, restartButton, quitButton, questionLabel,
+                 end_score_label, end_score_value)
 # ---------------------------------------------------------------------------------------------
 
 
@@ -258,6 +281,20 @@ def anyUpdate(updateType=None):
             return
 
 
+def resetDialog():
+    global restartAnswer
+    restartAnswer = 0
+
+
+def dialog():
+    return restartAnswer
+
+
+def onDialog(x):
+    global restartAnswer
+    restartAnswer = x
+
+
 pauseButton.onclick = lambda: togglePauseWithEffect()
 startButton.onclick = lambda: UI.set_scene("game")
 settingsButton.onclick = lambda: UI.set_scene("settings")
@@ -273,6 +310,9 @@ grid_height_increment.onclick = lambda: anyUpdate("GH+")
 grid_height_decrement.onclick = lambda: anyUpdate("GH-")
 
 settingsConfirmButton.onclick = lambda: update_settings()
+
+restartButton.onclick = lambda: onDialog(1)
+quitButton.onclick = lambda: onDialog(2)
 # ---------------------------------------------------------------------------------------------
 
 

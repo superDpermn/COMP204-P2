@@ -81,10 +81,10 @@ class UIContainer:
             return True
         return False
 
-    def draw(self, key_events, mouse_events, delta_time=1):  # call this method each frame
+    def draw(self, key_events, mouse_event, delta_time=1):  # call this method each frame
         # If a scene is loaded:
         if self.current_scene is not None:
-            self.current_scene.update(key_events, mouse_events, delta_time)
+            self.current_scene.update(key_events, mouse_event, delta_time)
 
             # draw the frame AFTER updating, to show the user the latest state of the program
             self.current_scene.draw()
@@ -102,9 +102,6 @@ class UIContainer:
         self.scenes.get("game").actors.remove(self.canvas)
         self.canvas = newCanvas
         self.scenes.get("game").actors.append(newCanvas)
-
-    def askPlayAgain(self):
-        return False
 
 
 class Style:

@@ -160,7 +160,7 @@ class GameGrid:
         iterationSuccess = True
         while iterationSuccess:
             iterationSuccess = False
-            for row in range(self.grid_height-2, 0, -1):
+            for row in range(self.grid_height-2, -1, -1):
                 for col in range(self.grid_width):
                     if self.tile_matrix[row][col] is not None and (row, col) not in connectedPositions:
                         if (row + 1, col) in connectedPositions:
@@ -178,7 +178,7 @@ class GameGrid:
                                 iterationSuccess = True
                                 continue
         ret = False
-        for row in range(self.grid_height-2, 0, -1):
+        for row in range(self.grid_height-2, -1, -1):
             for col in range(self.grid_width):
                 if self.tile_matrix[row][col] is not None and (row, col) not in connectedPositions:
                     self.tile_matrix[row+1][col] = self.tile_matrix[row][col]
