@@ -1,10 +1,10 @@
 from user_interface import *
 from lib.color import Color
 
-Settings = {"EDGE_LENGTH": 30,
+Settings = {"EDGE_LENGTH": 28,
             "GRID_WIDTH": 12,
             "GRID_HEIGHT": 20,
-            "DIFFICULTY": "HARD"}
+            "DIFFICULTY": "NORMAL"}
 
 scores = [0 for i in range(10)]
 
@@ -128,7 +128,6 @@ def createDefaultCanvas(grid=None):
                           tetromino_view, score_value)
         temp.finalize(grid)
         return temp
-
 
 
 GridCanvas = createDefaultCanvas()
