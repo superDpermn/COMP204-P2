@@ -8,9 +8,10 @@ import lib.stddraw as StdDraw  # for creating an animation with user interaction
 from game_grid import GameGrid
 from tetromino import Tetromino  # the class for modeling the tetrominoes
 from Tetris_2048_init import get_finalized_UI as getUI
-from Tetris_2048_init import createDefaultCanvas as newCanvas
 from Tetris_2048_init import update_settings as finalize_reset
 from Tetris_2048_init import Settings
+from Tetris_2048_init import updateScores
+from Tetris_2048_init import registerScoreChanges
 from InputController import InputController
 
 
@@ -52,6 +53,8 @@ class GameInstance:
             # comment the next line to test game end screen
             self.scene_loop()
 
+            self.update_scores()
+
             self.UI.set_scene("end")
 
             StdDraw.clear(StdDraw.BLACK)
@@ -66,6 +69,34 @@ class GameInstance:
     def resetGrid(self):
         self.grid = GameGrid((Settings.get("GRID_WIDTH", 12), Settings.get("GRID_HEIGHT", 20)))
         self.UI.reset(finalize_reset(self.grid))
+
+    def update_scores(self):
+        # Read existing scores from the file
+        try:
+            with open("scoreboard.txt", 'r') as file:
+                scores = [int(line.strip()) for line in file.readlines()]
+        except FileNotFoundError:
+            scores = []
+
+        # Add the new score to the list
+        scores.append(self.UI.canvas.score)
+
+        # Sort the scores in descending order
+        scores.sort(reverse=True)
+
+        # Keep only the top 10 scores
+        scores = scores[:10]
+
+        while len(scores) < 10:
+            scores.append(0)
+
+        # Write the updated scores back to the file
+        with open("scoreboard.txt", 'w') as file:
+            for s in scores:
+                file.write(str(s) + '\n')
+
+        updateScores(scores)
+        registerScoreChanges()
 
 
 # Create new game instance

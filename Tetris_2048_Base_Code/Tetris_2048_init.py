@@ -5,6 +5,10 @@ Settings = {"EDGE_LENGTH": 30,
             "GRID_WIDTH": 12,
             "GRID_HEIGHT": 20,
             "DIFFICULTY": "HARD"}
+
+scores = [0 for i in range(10)]
+
+
 # The visual edge length of each game tile (in pixels). This value is used for all relevant tasks
 EDGE_LENGTH = Settings.get("EDGE_LENGTH", 30)
 header_font_size = 40  # Font size for headings
@@ -12,17 +16,44 @@ content_font_size = 20
 
 
 # -------------------------------Main Menu Scene (Components)----------------------------------
-gameLogo = UIImage(120, 400, 360, 206, "Logo.png")
+gameLogo = UIImage(120, 450, 360, 206, "Logo.png")
 
-startButton = UIButton(200, 200, 200, 70, "Start Game",
+startButton = UIButton(200, 350, 200, 70, "Start Game",
                        Style(background_color=Color(102, 178, 255),
                              border_width=0.005, border_color=Color(255, 255, 255),
                              font_size=header_font_size, font="Arial Bold"))
 
-settingsButton = UIButton(200, 100, 200, 70, "Settings",
+settingsButton = UIButton(200, 270, 200, 70, "Settings",
                           Style(background_color=Color(255, 153, 51),
                                 border_color=Color(255, 255, 255), border_width=0.005,
                                 font_size=header_font_size, font="Arial Bold"))
+
+scoreboardLabel = UITextBox(200, 220, 200, 30, "Scoreboard",
+                            Style(font_size=30, font="Arial Bold",
+                                  border_width=0.002, border_color=StdDraw.BLACK))
+scoreboard = UIBlock(200, 20, 200, 180)
+
+changes = []
+
+
+def updateScores(newScores):
+    global changes, scores
+    changes = []
+    for i in range(10):
+        if newScores[i] != scores[i]:
+            changes.append((i, newScores[i]))
+    scores = newScores
+
+
+scoreboardBoxes = [UITextBox(200, 200-i*20, 200, 20, str(i+1) + ". " + str(scores[i]),
+                             Style(font_size=20, font="Arial Bold"))
+                   for i in range(10)]
+
+
+def registerScoreChanges():
+    for x in changes:
+        scoreboardBoxes[x[0]].text = str(x[0]+1) + ". " + str(x[1])
+
 
 mainMenuBG = UIImage(0, 0, 600, 700, "tetris_bg.jpg")
 # ---------------------------------------------------------------------------------------------
@@ -128,7 +159,11 @@ bg_pattern = UIImage(0, 0, 600, 700, "tetris_bg.jpg")
 
 
 # -----------------------------------Scene Assembly--------------------------------------------
-mainMenu = Scene(mainMenuBG, gameLogo, startButton, settingsButton)
+mainMenu = Scene(mainMenuBG, gameLogo, startButton, settingsButton, scoreboard,
+                 scoreboardBoxes[0], scoreboardBoxes[1], scoreboardBoxes[2],
+                 scoreboardBoxes[3], scoreboardBoxes[4], scoreboardBoxes[5],
+                 scoreboardBoxes[6], scoreboardBoxes[7], scoreboardBoxes[8],
+                 scoreboardBoxes[9], scoreboardLabel)
 
 settingsMenu = Scene(settingsMenuBackground, settingsMenuLabel,
                      backToMainMenuButton, settingsConfirmButton,
